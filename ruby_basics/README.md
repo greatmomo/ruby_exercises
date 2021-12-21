@@ -43,3 +43,6 @@ These exercises are designed to complement the [Ruby Basic lessons](https://www.
 #### 11.Nested Collections
 
 - [ ] Nested Collection Exercises
+
+
+## In order to allow saving of files, I had to do "sudo chmod -R 777 ."
