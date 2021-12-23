@@ -46,3 +46,4 @@ These exercises are designed to complement the [Ruby Basic lessons](https://www.
 
 
 ## In order to allow saving of files, I had to do "sudo chmod -R 777 ."
+# Did up to part 5
