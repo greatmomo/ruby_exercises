@@ -38,11 +38,11 @@ These exercises are designed to complement the [Ruby Basic lessons](https://www.
 
 #### 10.Predicate Enumerables
 
-- [ ] Predicate Enumerable Exercises
+- [x] Predicate Enumerable Exercises
 
 #### 11.Nested Collections
 
-- [ ] Nested Collection Exercises
+- [x] Nested Collection Exercises
 
 
 ## In order to allow saving of files, I had to do "sudo chmod -R 777 ."
