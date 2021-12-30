@@ -36,4 +36,4 @@ Each directory contains a read me with instructions for the exercises within the
 
 ## Comments
 
-Codecademy OOP 1
+Codecademy OOP 2
