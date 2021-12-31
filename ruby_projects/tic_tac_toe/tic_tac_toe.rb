@@ -43,6 +43,7 @@ end
 # Game loop and logic
 class Game
   @@victory_state = false
+  @@victor = 0
   @@current_player = 1
   @@player1 = Player.new('', '')
   @@player2 = Player.new('', '')
@@ -70,7 +71,19 @@ class Game
       Board.set_board((@@current_player == 1 ? @@player1.symbol : @@player2.symbol), (input.to_i - 1))
       Board.print_board
       @@current_player == 1? @@current_player = 2 : @@current_player = 1
+      @@victory_state = self.game_over?
     end
+
+    case @@victor
+    when 0
+      puts "It's a tie!"
+    when 1
+      puts "#{@@player1.name} wins!"
+    when 2
+      puts "#{@@player2.name} wins!"
+    end
+
+    # play again?
   end
 
   def Game.play_prompt
@@ -91,6 +104,21 @@ class Game
       return true
     end
     false
+  end
+
+  def self.game_over?
+    full_board = true
+    Board.board.each do |value|
+      if value.is_a? Numeric
+        full_board = false
+        break
+      end
+    end
+
+    # check for victory state!
+    # (array1 - array2).empty? can check if all values are shared...
+
+    full_board
   end
 end
 
