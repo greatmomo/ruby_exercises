@@ -34,6 +34,10 @@ class Board
   def self.board
     @@board
   end
+
+  def self.set_board(value, index)
+    @@board[index] = value
+  end
 end
 
 # Game loop and logic
@@ -63,7 +67,9 @@ class Game
     until @@victory_state == true
       input = Game.play_prompt
       next unless input_valid?(input)
-      puts "That was valid input!"
+      Board.set_board((@@current_player == 1 ? @@player1.symbol : @@player2.symbol), (input.to_i - 1))
+      Board.print_board
+      @@current_player == 1? @@current_player = 2 : @@current_player = 1
     end
   end
 
@@ -81,7 +87,7 @@ class Game
     value = value.to_i
     # check if value is 1-9
     return false unless value >= 1 && value <= 9
-    if Board.board[value].is_a? Numeric
+    if Board.board[value - 1].is_a? Numeric
       return true
     end
     false
