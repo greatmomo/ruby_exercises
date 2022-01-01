@@ -117,6 +117,27 @@ class Game
 
     # check for victory state!
     # (array1 - array2).empty? can check if all values are shared...
+    if (Board.board[0] == @@player1.symbol && Board.board[1] == @@player1.symbol && Board.board[2] == @@player1.symbol) ||
+      (Board.board[3] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[5] == @@player1.symbol) ||
+      (Board.board[6] == @@player1.symbol && Board.board[7] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
+      (Board.board[0] == @@player1.symbol && Board.board[3] == @@player1.symbol && Board.board[6] == @@player1.symbol) ||
+      (Board.board[1] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[7] == @@player1.symbol) ||
+      (Board.board[2] == @@player1.symbol && Board.board[5] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
+      (Board.board[0] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
+      (Board.board[2] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[6] == @@player1.symbol)
+      @@victor = 1
+      return true
+    elsif (Board.board[0] == @@player2.symbol && Board.board[1] == @@player2.symbol && Board.board[2] == @@player2.symbol) ||
+      (Board.board[3] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[5] == @@player2.symbol) ||
+      (Board.board[6] == @@player2.symbol && Board.board[7] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
+      (Board.board[0] == @@player2.symbol && Board.board[3] == @@player2.symbol && Board.board[6] == @@player2.symbol) ||
+      (Board.board[1] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[7] == @@player2.symbol) ||
+      (Board.board[2] == @@player2.symbol && Board.board[5] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
+      (Board.board[0] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
+      (Board.board[2] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[6] == @@player2.symbol)
+      @@victor = 2
+      return true
+    end
 
     full_board
   end
@@ -127,5 +148,3 @@ Game.intro
 Board.print_board
 
 Game.game_loop
-
-# binding.pry
