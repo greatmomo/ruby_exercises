@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
-# each round, switch players and check if valid (not yet played on)
-# check for victory states
-# use array of possible victory states and compare to symbols
-
 require 'pry-byebug'
 
 # Player class stores name and symbol
 class Player
-  attr_accessor :name
-  attr_accessor :symbol
+  attr_accessor :name, :symbol
 
   def initialize(name, symbol)
     @name = name
@@ -68,10 +63,11 @@ class Game
     until @@victory_state == true
       input = Game.play_prompt
       next unless input_valid?(input)
+
       Board.set_board((@@current_player == 1 ? @@player1.symbol : @@player2.symbol), (input.to_i - 1))
       Board.print_board
-      @@current_player == 1? @@current_player = 2 : @@current_player = 1
-      @@victory_state = self.game_over?
+      @@current_player = @@current_player == 1 ? 2 : 1
+      @@victory_state = game_over?
     end
 
     case @@victor
@@ -86,7 +82,7 @@ class Game
     # play again?
   end
 
-  def Game.play_prompt
+  def self.play_prompt
     if @@current_player == 1
       puts "#{@@player1.name}, enter the number where you want to play:"
     else
@@ -97,12 +93,12 @@ class Game
 
   def self.input_valid?(value)
     return false unless value.length == 1
+
     value = value.to_i
     # check if value is 1-9
     return false unless value >= 1 && value <= 9
-    if Board.board[value - 1].is_a? Numeric
-      return true
-    end
+    return true if Board.board[value - 1].is_a? Numeric
+
     false
   end
 
@@ -116,25 +112,24 @@ class Game
     end
 
     # check for victory state!
-    # (array1 - array2).empty? can check if all values are shared...
     if (Board.board[0] == @@player1.symbol && Board.board[1] == @@player1.symbol && Board.board[2] == @@player1.symbol) ||
-      (Board.board[3] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[5] == @@player1.symbol) ||
-      (Board.board[6] == @@player1.symbol && Board.board[7] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
-      (Board.board[0] == @@player1.symbol && Board.board[3] == @@player1.symbol && Board.board[6] == @@player1.symbol) ||
-      (Board.board[1] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[7] == @@player1.symbol) ||
-      (Board.board[2] == @@player1.symbol && Board.board[5] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
-      (Board.board[0] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
-      (Board.board[2] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[6] == @@player1.symbol)
+       (Board.board[3] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[5] == @@player1.symbol) ||
+       (Board.board[6] == @@player1.symbol && Board.board[7] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
+       (Board.board[0] == @@player1.symbol && Board.board[3] == @@player1.symbol && Board.board[6] == @@player1.symbol) ||
+       (Board.board[1] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[7] == @@player1.symbol) ||
+       (Board.board[2] == @@player1.symbol && Board.board[5] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
+       (Board.board[0] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[8] == @@player1.symbol) ||
+       (Board.board[2] == @@player1.symbol && Board.board[4] == @@player1.symbol && Board.board[6] == @@player1.symbol)
       @@victor = 1
       return true
     elsif (Board.board[0] == @@player2.symbol && Board.board[1] == @@player2.symbol && Board.board[2] == @@player2.symbol) ||
-      (Board.board[3] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[5] == @@player2.symbol) ||
-      (Board.board[6] == @@player2.symbol && Board.board[7] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
-      (Board.board[0] == @@player2.symbol && Board.board[3] == @@player2.symbol && Board.board[6] == @@player2.symbol) ||
-      (Board.board[1] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[7] == @@player2.symbol) ||
-      (Board.board[2] == @@player2.symbol && Board.board[5] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
-      (Board.board[0] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
-      (Board.board[2] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[6] == @@player2.symbol)
+          (Board.board[3] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[5] == @@player2.symbol) ||
+          (Board.board[6] == @@player2.symbol && Board.board[7] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
+          (Board.board[0] == @@player2.symbol && Board.board[3] == @@player2.symbol && Board.board[6] == @@player2.symbol) ||
+          (Board.board[1] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[7] == @@player2.symbol) ||
+          (Board.board[2] == @@player2.symbol && Board.board[5] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
+          (Board.board[0] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[8] == @@player2.symbol) ||
+          (Board.board[2] == @@player2.symbol && Board.board[4] == @@player2.symbol && Board.board[6] == @@player2.symbol)
       @@victor = 2
       return true
     end
