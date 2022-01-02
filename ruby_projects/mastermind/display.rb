@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop: disable Layout/LineLength
-
 # Text needed for Mastermind
 module Display
   def display_intro
@@ -15,5 +13,8 @@ module Display
   def display_winner(winner)
     "GAME OVER! #{winner} is the winner!"
   end
+
+  def display_board_creation
+    'To build your code, enter four numbers 1-6 and press enter:'
+  end
 end
-# rubocop:enable Layout/LineLength

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'game.rb'
-require_relative 'display.rb'
+require_relative 'game'
+require_relative 'display'
 
 require 'colorize'
 

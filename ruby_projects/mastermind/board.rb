@@ -15,4 +15,10 @@ class Board
   def match_board?(number, index)
     @cells[index] == number
   end
+
+  # delete this, for debug only
+  def show
+    print @cells
+    puts
+  end
 end
