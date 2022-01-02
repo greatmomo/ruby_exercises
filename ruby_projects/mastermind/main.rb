@@ -23,4 +23,4 @@ end
 
 play_game
 
-puts String.colors
+# puts String.colors
