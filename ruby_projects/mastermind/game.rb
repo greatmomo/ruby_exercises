@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry-byebug'
+
 require_relative 'display'
 require_relative 'board'
 
@@ -18,7 +20,8 @@ class Game
     create_board if @mode == 1
     create_computer_board if @mode == 2
     board.show
-    # player_turns
+    player_turns if @mode == 2
+    computer_turns if @mode == 1
     # conclusion
   end
 
@@ -71,5 +74,51 @@ class Game
 
   def create_computer_board
     4.times { @board.cells.push(rand(1..6)) }
+  end
+
+  def player_turns
+    puts display_guess_prompt
+    code_input = gets.chomp
+    if valid?(code_input)
+      validity_array = guess_validity(code_input)
+    else
+      player_turns
+    end
+  end
+
+  def guess_validity(code_input)
+    input_array = code_input.split('').map(&:to_i)
+    return_array = []
+    return_array[0] = fully_correct(input_array)
+    return_array[1] = partially_correct(input_array) - return_array[0]
+    binding.pry
+    # TODO: Fix single check logic
+    # TODO: Add printing of correct guesses
+    # TODO: Add victory condition
+  end
+
+  def fully_correct(input_array)
+    return_value = 0
+    input_array.each_with_index do |value, index|
+      if @board.cells[index] == value
+        return_value += 1
+      end
+    end
+    return_value
+  end
+
+  def partially_correct(input_array)
+    return_value = 0
+    temp_cells = @board.cells.map(&:clone)
+    temp_cells.each_with_index do |cell, index|
+      input_array.each do |value|
+        if value == cell
+          temp_cells.delete_at(index)
+          return_value += 1
+          next
+        end
+      end
+    end
+    return_value
   end
 end

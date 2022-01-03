@@ -17,4 +17,8 @@ module Display
   def display_board_creation
     'To build your code, enter four numbers 1-6 and press enter:'
   end
+
+  def display_guess_prompt
+    'To make a guess, enter four numbers 1-6 and press enter:'
+  end
 end
