@@ -16,7 +16,7 @@ class Board
     @cells[index] == number
   end
 
-  # delete this, for debug only
+  # for debug only
   def show
     print @cells
     puts

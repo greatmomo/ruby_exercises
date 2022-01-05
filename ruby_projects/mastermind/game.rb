@@ -13,23 +13,27 @@ class Game
   def initialize
     @board = Board.new
     @mode = nil
+    @turn_counter = 0
+    @victory_state = false
   end
 
   def play
     game_set_up
     create_board if @mode == 1
     create_computer_board if @mode == 2
-    board.show
     player_turns if @mode == 2
     computer_turns if @mode == 1
-    # conclusion
+    conclusion
   end
 
   private
 
   def game_set_up
+    @turn_counter = 1
+    @victory_state = false
     puts display_intro
     mode_select
+    puts display_validity_description
   end
 
   def mode_select
@@ -77,48 +81,69 @@ class Game
   end
 
   def player_turns
-    puts display_guess_prompt
+    puts "Turn #{@turn_counter}: " + display_guess_prompt
     code_input = gets.chomp
     if valid?(code_input)
-      validity_array = guess_validity(code_input)
+      validity_array = guess_validity(code_input.split('').map(&:to_i))
+      print ' '.on_light_blue + ('♥ ' * validity_array[0]).on_light_blue
+      print ('• ' * validity_array[1]).on_light_blue
+      print '   '.on_light_blue if validity_array[0] == 0 && validity_array[1] == 0
+      puts
+      @turn_counter += 1
+      player_turns unless @turn_counter == 12 || validity_array[0] == 4
     else
       player_turns
     end
   end
 
-  def guess_validity(code_input)
-    input_array = code_input.split('').map(&:to_i)
+  def guess_validity(input_array)
+    temp_input = input_array.clone
+    temp_cells = @board.cells.clone
     return_array = []
-    return_array[0] = fully_correct(input_array)
-    return_array[1] = partially_correct(input_array) - return_array[0]
-    binding.pry
-    # TODO: Fix single check logic
-    # TODO: Add printing of correct guesses
-    # TODO: Add victory condition
+    return_array[0] = fully_correct(temp_input, temp_cells)
+    return_array[1] = partially_correct(temp_input, temp_cells)
+    @victory_state = true if return_array[0] == 4
+    return_array
   end
 
-  def fully_correct(input_array)
-    return_value = 0
-    input_array.each_with_index do |value, index|
-      if @board.cells[index] == value
-        return_value += 1
-      end
+  def fully_correct(guess, master)
+    exact = 0
+    master.each_with_index do |value, index|
+      next unless value == guess[index]
+
+      exact += 1
+      master[index] = '*'
+      guess[index] = '*'
     end
-    return_value
+    exact
   end
 
-  def partially_correct(input_array)
-    return_value = 0
-    temp_cells = @board.cells.map(&:clone)
-    temp_cells.each_with_index do |cell, index|
-      input_array.each do |value|
-        if value == cell
-          temp_cells.delete_at(index)
-          return_value += 1
-          next
-        end
-      end
+  def partially_correct(guess, master)
+    partial = 0
+    guess.each_index do |index|
+      next unless guess[index] != '*' && master.include?(guess[index])
+
+      partial += 1
+      remove = master.find_index(guess[index])
+      master[remove] = '?'
+      guess[index] = '?'
     end
-    return_value
+    partial
+  end
+
+  def hash_generator(input_array)
+    result = Hash.new(0)
+    input_array.each { |value| result[value] += 1 }
+    return result
+  end
+
+  def conclusion
+    if @victory_state
+      puts "Correct code!"
+      puts display_winner(@mode == 1 ? 'computer' : 'player')
+    else
+      puts "Out of turns!"
+      puts display_winner(@mode == 2 ? 'computer' : 'player')
+    end
   end
 end

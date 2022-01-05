@@ -3,7 +3,7 @@
 # Text needed for Mastermind
 module Display
   def display_intro
-    "Let's play a simple Mastermind game in the console! \n\n"
+    "Let's play a simple Mastermind game in the console! Try to guess the correct sequence within 12 turns!\n\n"
   end
 
   def display_mode_select
@@ -20,5 +20,9 @@ module Display
 
   def display_guess_prompt
     'To make a guess, enter four numbers 1-6 and press enter:'
+  end
+
+  def display_validity_description
+    'Values that are correct and in the correct position will look like: ' + ' ♥ '.on_light_blue + ' and values that are in the wrong position will look like: ' + ' • '.on_light_blue
   end
 end

@@ -12,15 +12,13 @@ def play_game
 end
 
 def repeat_game
-  puts "Would you like to play a new game? Press 'y' for yes, or any other character for no.".on_light_blue
+  puts "Would you like to play a new game? Press 'y' for yes, or any other character for no."
   repeat_input = gets.chomp.downcase
   if repeat_input == 'y'
     play_game
   else
-    puts 'Thanks for playing!'.on_light_magenta
+    puts 'Thanks for playing!'
   end
 end
 
 play_game
-
-# puts String.colors
