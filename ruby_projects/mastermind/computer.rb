@@ -2,10 +2,14 @@
 
 # Mastermind board
 class Computer
-  attr_reader :known_values
+  attr_reader :known_values, :guessed_permutations, :banned_values
+  attr_accessor :previous_guess
 
   def initialize
     @known_values = []
+    @guessed_permutations = []
+    @banned_values = Array.new(4) {Array.new()}
+    @previous_guess = []
   end
 
   def update_known(number, count)
@@ -18,5 +22,21 @@ class Computer
   def show_known
     print @known_values
     puts
+  end
+
+  def known_length
+    @known_values.length
+  end
+
+  def add_guessed(input_array)
+    @guessed_permutations.push(input_array)
+  end
+
+  def ban_current(input_array)
+    input_array.each_with_index do |value, index|
+      unless @banned_values[index].include?(value)
+        @banned_values[index].push(value) 
+      end
+    end
   end
 end

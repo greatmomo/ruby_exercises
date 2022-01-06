@@ -150,13 +150,14 @@ class Game
   end
 
   def computer_turns
-    computer_input = computer_codegen
+    computer_input = @computer.known_length < 4 ? computer_codegen : computer_permutate
+    @computer.add_guessed(computer_input)
     puts "Turn #{@turn_counter}: #{computer_input}"
     validity_array = guess_validity(computer_input)
-    print ' '.on_light_blue + ('♥ ' * validity_array[0]).on_light_blue
-    print ('• ' * validity_array[1]).on_light_blue
-    print '   '.on_light_blue if validity_array[0] == 0 && validity_array[1] == 0
-    puts
+    puts "validity array subtraction: #{validity_array[0] + validity_array[1]}"
+    @computer.ban_current(computer_input) if validity_array[1] == 4
+    display_validity(validity_array)
+    @computer.update_known(@turn_counter, validity_array[0] + validity_array[1] - @computer.known_length)
     @turn_counter += 1
     computer_turns unless @turn_counter > 12  || validity_array[0] == 4
   end
@@ -166,8 +167,34 @@ class Game
     when 1
       return [1,1,1,1]
     else
-      return Array.new(4) { rand(1..6) }
-      # computer checks working, now need to update logic and it's done!
+      return smart_gen
+    end
+  end
+
+  def smart_gen
+    generated = @computer.known_values.clone
+    (4 - generated.length).times do
+      generated.push(@turn_counter)
+    end
+    generated
+  end
+
+  def computer_permutate
+    permutation = @computer.previous_guess == [] ? @computer.known_values.shuffle : @computer.previous_guess.shuffle
+    bad_perm = false
+    @computer.previous_guess = permutation
+    @computer.banned_values.each_with_index do |value, index|
+      if value.include?(permutation[index])
+        bad_perm = true
+      end
+    end
+    if @computer.guessed_permutations.include?(permutation)
+      bad_perm = true
+    end
+    if bad_perm
+      computer_permutate
+    else
+      return permutation
     end
   end
 end

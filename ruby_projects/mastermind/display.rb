@@ -25,4 +25,11 @@ module Display
   def display_validity_description
     'Values that are correct and in the correct position will look like: ' + ' ♥ '.on_light_blue + ' and values that are in the wrong position will look like: ' + ' • '.on_light_blue
   end
+
+  def display_validity(validity_array)
+    print ' '.on_light_blue + ('♥ ' * validity_array[0]).on_light_blue
+    print ('• ' * validity_array[1]).on_light_blue
+    print '   '.on_light_blue if validity_array[0] == 0 && validity_array[1] == 0
+    puts
+  end
 end
