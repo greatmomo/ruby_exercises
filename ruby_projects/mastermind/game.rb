@@ -154,7 +154,6 @@ class Game
     @computer.add_guessed(computer_input)
     puts "Turn #{@turn_counter}: #{computer_input}"
     validity_array = guess_validity(computer_input)
-    puts "validity array subtraction: #{validity_array[0] + validity_array[1]}"
     @computer.ban_current(computer_input) if validity_array[1] == 4
     display_validity(validity_array)
     @computer.update_known(@turn_counter, validity_array[0] + validity_array[1] - @computer.known_length)
