@@ -4,6 +4,7 @@ require 'pry-byebug'
 
 require_relative 'display'
 require_relative 'board'
+require_relative 'computer'
 
 # Contains the logic to play the game
 class Game
@@ -12,6 +13,7 @@ class Game
 
   def initialize
     @board = Board.new
+    @computer = Computer.new
     @mode = nil
     @turn_counter = 0
     @victory_state = false
@@ -90,7 +92,7 @@ class Game
       print '   '.on_light_blue if validity_array[0] == 0 && validity_array[1] == 0
       puts
       @turn_counter += 1
-      player_turns unless @turn_counter == 12 || validity_array[0] == 4
+      player_turns unless @turn_counter > 12 || validity_array[0] == 4
     else
       player_turns
     end
@@ -144,6 +146,28 @@ class Game
     else
       puts "Out of turns!"
       puts display_winner(@mode == 2 ? 'computer' : 'player')
+    end
+  end
+
+  def computer_turns
+    computer_input = computer_codegen
+    puts "Turn #{@turn_counter}: #{computer_input}"
+    validity_array = guess_validity(computer_input)
+    print ' '.on_light_blue + ('♥ ' * validity_array[0]).on_light_blue
+    print ('• ' * validity_array[1]).on_light_blue
+    print '   '.on_light_blue if validity_array[0] == 0 && validity_array[1] == 0
+    puts
+    @turn_counter += 1
+    computer_turns unless @turn_counter > 12  || validity_array[0] == 4
+  end
+
+  def computer_codegen
+    case @turn_counter
+    when 1
+      return [1,1,1,1]
+    else
+      return Array.new(4) { rand(1..6) }
+      # computer checks working, now need to update logic and it's done!
     end
   end
 end
