@@ -136,15 +136,15 @@ class Game
   def hash_generator(input_array)
     result = Hash.new(0)
     input_array.each { |value| result[value] += 1 }
-    return result
+    result
   end
 
   def conclusion
     if @victory_state
-      puts "Correct code!"
+      puts 'Correct code!'
       puts display_winner(@mode == 1 ? 'computer' : 'player')
     else
-      puts "Out of turns!"
+      puts 'Out of turns!'
       puts display_winner(@mode == 2 ? 'computer' : 'player')
     end
   end
@@ -158,15 +158,15 @@ class Game
     display_validity(validity_array)
     @computer.update_known(@turn_counter, validity_array[0] + validity_array[1] - @computer.known_length)
     @turn_counter += 1
-    computer_turns unless @turn_counter > 12  || validity_array[0] == 4
+    computer_turns unless @turn_counter > 12 || validity_array[0] == 4
   end
 
   def computer_codegen
     case @turn_counter
     when 1
-      return [1,1,1,1]
+      [1, 1, 1, 1]
     else
-      return smart_gen
+      smart_gen
     end
   end
 
@@ -183,17 +183,13 @@ class Game
     bad_perm = false
     @computer.previous_guess = permutation
     @computer.banned_values.each_with_index do |value, index|
-      if value.include?(permutation[index])
-        bad_perm = true
-      end
+      bad_perm = true if value.include?(permutation[index])
     end
-    if @computer.guessed_permutations.include?(permutation)
-      bad_perm = true
-    end
+    bad_perm = true if @computer.guessed_permutations.include?(permutation)
     if bad_perm
       computer_permutate
     else
-      return permutation
+      permutation
     end
   end
 end

@@ -8,7 +8,7 @@ class Computer
   def initialize
     @known_values = []
     @guessed_permutations = []
-    @banned_values = Array.new(4) {Array.new()}
+    @banned_values = Array.new(4) { [] }
     @previous_guess = []
   end
 
@@ -34,9 +34,7 @@ class Computer
 
   def ban_current(input_array)
     input_array.each_with_index do |value, index|
-      unless @banned_values[index].include?(value)
-        @banned_values[index].push(value) 
-      end
+      @banned_values[index].push(value) unless @banned_values[index].include?(value)
     end
   end
 end
