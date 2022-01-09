@@ -1,6 +1,7 @@
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
+require 'pry-byebug'
 
 def clean_zipcode(zipcode)
   zipcode.to_s.rjust(5, '0')[0..4]
@@ -31,6 +32,9 @@ def save_thank_you_letter(id, form_letter)
   end
 end
 
+def clean_phone(phone_number)
+end
+
 puts 'Event Manager Initialized!'
 
 contents = CSV.open(
@@ -47,6 +51,8 @@ contents.each do |row|
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
   legislators = legislators_by_zipcode(zipcode)
+  # clean up legislators phone numbers before binding
+  puts legislators.phones.join unless legislators.phones.nil?
 
   form_letter = erb_template.result(binding)
 
