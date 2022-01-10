@@ -33,6 +33,17 @@ def save_thank_you_letter(id, form_letter)
 end
 
 def clean_phone(phone_number)
+  cleaned = phone_number.to_s.tr('^0-9', '')
+  case
+  when cleaned.length > 11
+    return "Bad number!"
+  when cleaned.length < 10
+    return "Bad number!"
+  when cleaned.length == 10
+    return cleaned
+  when cleaned.length == 11
+    return cleaned[1..-1] if cleaned[0] == '1'
+  end
 end
 
 puts 'Event Manager Initialized!'
@@ -50,9 +61,8 @@ contents.each do |row|
   id = row[0]
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
+  phone = clean_phone(row[:homephone])
   legislators = legislators_by_zipcode(zipcode)
-  # clean up legislators phone numbers before binding
-  puts legislators.phones.join unless legislators.phones.nil?
 
   form_letter = erb_template.result(binding)
 
