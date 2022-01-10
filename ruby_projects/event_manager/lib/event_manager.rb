@@ -52,7 +52,7 @@ def extract_hour(reg_date)
 end
 
 def extract_weekday(reg_date)
-  DateTime.strptime(reg_date, "%m/%d/%Y %H:%M").hour
+  DateTime.strptime(reg_date, "%m/%d/%Y %H:%M").wday
 end
 
 puts 'Event Manager Initialized!'
@@ -67,6 +67,7 @@ template_letter = File.read('form_letter.erb')
 erb_template = ERB.new template_letter
 
 peak_hours = Hash.new(0)
+peak_weekdays = Hash.new(0)
 
 contents.each do |row|
   id = row[0]
@@ -74,6 +75,7 @@ contents.each do |row|
   zipcode = clean_zipcode(row[:zipcode])
   phone = clean_phone(row[:homephone])
   peak_hours[extract_hour(row[:regdate])] += 1
+  peak_weekdays[extract_weekday(row[:regdate])] += 1
   legislators = legislators_by_zipcode(zipcode)
 
   form_letter = erb_template.result(binding)
@@ -81,6 +83,18 @@ contents.each do |row|
   save_thank_you_letter(id, form_letter)
 end
 
+peak_weekdays["Sunday"] = peak_weekdays.delete 0
+peak_weekdays["Monday"] = peak_weekdays.delete 1
+peak_weekdays["Tuesday"] = peak_weekdays.delete 2
+peak_weekdays["Wednesday"] = peak_weekdays.delete 3
+peak_weekdays["Thursday"] = peak_weekdays.delete 4
+peak_weekdays["Friday"] = peak_weekdays.delete 5
+peak_weekdays["Saturday"] = peak_weekdays.delete 6
+peak_weekdays.each do |key, value|
+  peak_weekdays[key] = "0" if value.nil?
+end
+
 puts peak_hours
+puts peak_weekdays
 
 # next: Assignment: Clean Phone Numbers
