@@ -4,6 +4,8 @@ require_relative 'dictionary'
 require_relative 'game'
 require_relative 'display'
 
+require 'yaml'
+
 include Display
 
 victory_state = ''
@@ -13,15 +15,19 @@ def game_loop
   while game.turn <= 8
     input = turn_text(game)
     if input == 'save'
-      # save game state
+      print display_filename_prompt      
+      file_name = gets.chomp
+      File.open(file_name, 'w') { |file| file.write(game.to_yaml) }
+      return 's'
       break
     end
     next unless input.match?(/[[:alpha:]]/) && input.length == 1 && !game.guesses.include?(input.upcase)
     game.guesses.push(input.upcase)
-    victory_state = 'v' if game.all_guessed?
+    return 'v' if game.all_guessed?
     game.turn = game.turn + 1
   end
   puts game.print_state
+  return ''
 end
 
 def game_prompt
@@ -37,8 +43,11 @@ def game_prompt
 end
 
 def load_game
-  # return the game state from a valid file
-  Game.new
+  print display_filename_prompt
+  file_name = gets.chomp
+  file = File.open(file_name, 'r')
+  data = file.read
+  YAML::load(data)
 end
 
 def turn_text(game)
@@ -49,10 +58,12 @@ def turn_text(game)
 end
 
 puts display_intro
-game_loop
+victory_state = game_loop
 
 if victory_state == 'v'
   puts "Congratulations! You won!"
+elsif victory_state == 's'
+  puts "File saved."
 else
   puts "Aww. Better luck next time!"
 end
