@@ -24,7 +24,7 @@ def game_loop
     next unless input.match?(/[[:alpha:]]/) && input.length == 1 && !game.guesses.include?(input.upcase)
     game.guesses.push(input.upcase)
     return 'v' if game.all_guessed?
-    game.turn = game.turn + 1
+    game.turn = game.turn + 1 if !game.word_to_guess.include? input.upcase
   end
   puts game.print_state
   return ''

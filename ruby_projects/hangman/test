@@ -5,4 +5,7 @@ guesses:
 - E
 - A
 - O
-turn: 3
+- R
+- F
+- M
+turn: 6

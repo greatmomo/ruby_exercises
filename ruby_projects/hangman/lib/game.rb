@@ -9,7 +9,7 @@ class Game
     @dictionary = Dictionary.new
     @word_to_guess = @dictionary.random_word
     @guesses = []
-    @turn = 0
+    @turn = 1
   end
 
   def print_state
