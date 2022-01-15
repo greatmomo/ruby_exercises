@@ -16,17 +16,18 @@ class Game
     state = ''
     chars = @word_to_guess.split('')
     chars.each do |char|
-      if @guesses.include?(char)
-        state += char + ' '
-      else
-        state += '_' + ' '
-      end
+      state += if @guesses.include?(char)
+                 "#{char} "
+               else
+                 '_ '
+               end
     end
     state
   end
 
   def all_guessed?
     return false if print_state.include?('_')
-    return true
+
+    true
   end
 end

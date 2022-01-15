@@ -11,10 +11,12 @@ module Display
   end
 
   def display_filename_prompt
-    "Enter the filename: "
+    'Enter the filename: '
   end
 
   def display_game_prompt
     'Enter 1 to play a new game. Enter 2 to load a saved game.'
   end
 end
+
+include Display
