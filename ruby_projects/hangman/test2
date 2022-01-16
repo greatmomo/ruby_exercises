@@ -1,0 +1,9 @@
+--- !ruby/object:Game
+dictionary: !ruby/object:Dictionary {}
+word_to_guess: RESPONDER
+guesses:
+- E
+- A
+- O
+- I
+turn: 3

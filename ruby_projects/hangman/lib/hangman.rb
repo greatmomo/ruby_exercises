@@ -8,14 +8,9 @@ require 'yaml'
 
 def game_loop
   game = game_prompt
-  while game.turn <= 8
+  while game.turn <= 
     input = turn_text(game)
-    if input == 'save'
-      print display_filename_prompt
-      file_name = gets.chomp
-      File.open(file_name, 'w') { |file| file.write(game.to_yaml) }
-      return 's'
-    end
+    return save_game(game) if input == 'save'
     next unless input.match?(/[[:alpha:]]/) && input.length == 1 && !game.guesses.include?(input.upcase)
 
     game.guesses.push(input.upcase)
@@ -38,6 +33,13 @@ def game_prompt
   else
     game_prompt
   end
+end
+
+def save_game(game)
+  print display_filename_prompt
+  file_name = gets.chomp
+  File.open(file_name, 'w') { |file| file.write(game.to_yaml) }
+  's'
 end
 
 def load_game
