@@ -1,6 +1,13 @@
 module Enumerable
   # Your code goes here
   def my_each_with_index
+    return to_enum(:my_each_with_index) unless block_given?
+
+    i = 0
+    for value in self do
+      yield [value, i]
+      i += 1
+    end
   end
   
   def my_select
@@ -35,7 +42,12 @@ class Array
     return to_enum(:my_each) unless block_given?
 
     for value in self do
-      yield value
+      yield(value, index)
     end
   end
+end
+
+numbers = [1, 2, 3, 4, 5]
+numbers.my_each_with_index do |value, index|
+  puts "value = #{value}, index = #{index}"
 end
