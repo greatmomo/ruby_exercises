@@ -21,10 +21,22 @@ module Enumerable
     arr
   end
 
-  def my_all?
+  def my_all?(&block)
+    return to_enum(:my_all?) unless block_given?
+
+    for value in self do
+      return false unless block.call(value)
+    end
+    true
   end
 
-  def my_any?
+  def my_any?(&block)
+    return to_enum(:my_and?) unless block_given?
+
+    for value in self do
+      return true if block.call(value)
+    end
+    false
   end
 
   def my_none?
