@@ -10,7 +10,15 @@ module Enumerable
     end
   end
   
-  def my_select
+  def my_select(&block)
+    return to_enum(:my_select) unless block_given?
+
+    arr = []
+
+    for value in self do
+      arr << value if block.call(value)
+    end
+    arr
   end
 
   def my_all?
@@ -47,7 +55,6 @@ class Array
   end
 end
 
-numbers = [1, 2, 3, 4, 5]
-numbers.my_each_with_index do |value, index|
-  puts "value = #{value}, index = #{index}"
-end
+numbers = [11, 22, 33, 4, 5]
+output = numbers.my_select {|value| value > 10}
+puts "output = #{output}"
