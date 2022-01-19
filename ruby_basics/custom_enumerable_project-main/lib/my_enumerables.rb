@@ -39,13 +39,36 @@ module Enumerable
     false
   end
 
-  def my_none?
+  def my_none?(&block)
+    return to_enum(:my_none?) unless block_given?
+
+    for value in self do
+      return false if block.call(value)
+    end
+    true
   end
 
-  def my_count
+  def my_count(arg=nil, &block)
+    count = 0
+    if block_given?
+      self.each { |value| count += 1 if block.call(value) }
+    elsif arg != nil
+      self.each { |value| count += 1 if value == arg }
+    else
+      self.each { |value| count += 1 }
+    end
+    count
   end
 
-  def my_map
+  def my_map(&block)
+    return to_enum(:my_map) unless block_given?
+
+    arr = []
+
+    for value in self do
+      arr << block.call(value)
+    end
+    arr
   end
   
   def my_inject
@@ -68,5 +91,5 @@ class Array
 end
 
 numbers = [11, 22, 33, 4, 5]
-output = numbers.my_select {|value| value > 10}
+output = numbers.my_none? {|value| value > 10}
 puts "output = #{output}"
