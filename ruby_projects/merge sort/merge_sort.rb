@@ -20,6 +20,9 @@ def combine(arr_left, arr_right)
   ret_arr
 end
 
-arr = [4, 3, 5, 1, 2, 7, 6, 2, 5, 12, 33, 1, 7, 2]
-print merge_sort(arr)
-puts
+arr = []
+rand(33).times do
+  arr << rand(100) + 1
+end
+
+puts "#{merge_sort(arr)}"
