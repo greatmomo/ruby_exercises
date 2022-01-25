@@ -68,6 +68,13 @@ class LinkedList
   end
 
   def contains?(value)
+    node = @head
+    return true if node.value == value
+
+    while (node = node.next_node)
+      return true if node.value == value
+    end
+    false
   end
 
   def find(value)
@@ -121,6 +128,7 @@ my_list.prepend(11)
 puts my_list.to_s
 puts "pop = #{my_list.pop}"
 puts my_list.to_s
+puts "contains?(20) = #{my_list.contains?(20)}, contains?(33) = #{my_list.contains?(33)}"
 
 # puts "head = #{my_list.head.value}, tail = #{my_list.tail.value}"
 # puts "at(0) = #{my_list.at(0).value}, at(1) = #{my_list.at(1).value}, at(3) = #{my_list.at(3)}, at(4) = #{my_list.at(4)}"
