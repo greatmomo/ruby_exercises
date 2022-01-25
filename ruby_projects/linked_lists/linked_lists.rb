@@ -115,6 +115,16 @@ class LinkedList
   end
 
   def remove_at(index)
+    node = @head
+    @head = node.next_node if index == 0
+
+    (index - 1).times do
+      node = node.next_node
+    end
+
+    return unless node.next_node
+
+    node.next_node = node.next_node.next_node
   end
 end
 
@@ -126,7 +136,8 @@ my_list.append(40)
 puts my_list.to_s
 my_list.prepend(11)
 puts my_list.to_s
-puts "pop = #{my_list.pop}"
+# puts "pop = #{my_list.pop}"
+my_list.remove_at(0)
 puts my_list.to_s
 puts "contains?(20) = #{my_list.contains?(20)}, contains?(33) = #{my_list.contains?(33)}"
 
