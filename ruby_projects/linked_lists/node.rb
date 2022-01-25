@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Node class for Linked List
 class Node
   attr_accessor :value, :next_node
 
