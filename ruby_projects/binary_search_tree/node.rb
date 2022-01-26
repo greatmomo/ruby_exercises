@@ -8,6 +8,7 @@ class Node
   def <=>(other)
     value <=> other.value
   end
+
   def initialize(value, left = nil, right = nil)
     @value = value
     @left = left
