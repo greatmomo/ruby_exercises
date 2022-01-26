@@ -40,11 +40,11 @@ class LinkedList
   def size
     return 0 if @head.nil?
 
-    scan = @head
+    node = @head
     count = 1
-    until scan.next_node.nil?
+    until node.next_node.nil?
       count += 1
-      scan = scan.next_node
+      node = node.next_node
     end
     count
   end
@@ -62,12 +62,14 @@ class LinkedList
   def pop
     node = @head
     prev = node
+    value = node.value
     while node.next_node
       value = node.next_node.value
       prev = node
       node = node.next_node
     end
     prev.next_node = nil
+    @head = nil if node == @head
     value
   end
 
@@ -138,8 +140,9 @@ puts my_list.to_s
 my_list.append(40)
 puts my_list.to_s
 my_list.prepend(11)
+puts "pop = #{my_list.pop}"
 puts my_list.to_s
-# puts "pop = #{my_list.pop}"
+
 my_list.remove_at(0)
 puts my_list.to_s
 puts "contains?(20) = #{my_list.contains?(20)}, " \
