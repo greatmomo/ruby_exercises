@@ -38,11 +38,9 @@ class Tree
     end
   end
 
-  def minValueNode(node)
-    while (node && node.left)
-      node = node.left
-    end
-    
+  def min_value_node(node)
+    node = node.left while node&.left
+
     node
   end
 
@@ -65,15 +63,17 @@ class Tree
         return root
       end
 
-      temp = minValueNode(root.right)
+      temp = min_value_node(root.right)
       root.value = temp.value
       root.right = delete(root.right, temp.value)
     end
     root
   end
 
-  def find(value)
-    # find
+  def find(value, node = root)
+    return node if node.nil? || node.value == value
+
+    value < node.value ? find(value, node.left) : find(value, node.right)
   end
 
   def level_order(&block)
@@ -124,3 +124,4 @@ puts
 my_tree.delete(my_tree.root, 3)
 my_tree.print_tree(my_tree.root)
 puts
+puts "find = #{my_tree.find(7)}"
