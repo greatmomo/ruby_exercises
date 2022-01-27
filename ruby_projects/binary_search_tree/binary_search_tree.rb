@@ -11,6 +11,8 @@ class Tree
   end
 
   def build_tree(array)
+    return nil if array.empty?
+
     mid = array.length / 2
     return Node.new(array[mid]) if mid.zero?
 
@@ -36,8 +38,38 @@ class Tree
     end
   end
 
-  def delete(value)
-    # delete
+  def minValueNode(node)
+    while (node && node.left)
+      node = node.left
+    end
+    
+    node
+  end
+
+  def delete(root, value)
+    return root if root.nil?
+
+    case
+    when value < root.value
+      root.left = delete(root.left, value)
+    when value > root.value
+      root.right = delete(root.right, value)
+    else
+      if root.left.nil? && root.right.nil?
+        return nil
+      elsif root.left.nil?
+        root = root.right
+        return root
+      elsif root.right.nil?
+        root = root.left
+        return root
+      end
+
+      temp = minValueNode(root.right)
+      root.value = temp.value
+      root.right = delete(root.right, temp.value)
+    end
+    root
   end
 
   def find(value)
@@ -80,7 +112,7 @@ class Tree
     return unless root
 
     print_tree(root.left)
-    print "#{root.value} " unless root.value.nil?
+    print "#{root.value} "
     print_tree(root.right)
   end
 end
@@ -89,5 +121,6 @@ input_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 my_tree = Tree.new(input_array)
 my_tree.print_tree(my_tree.root)
 puts
-my_tree.insert(11)
+my_tree.delete(my_tree.root, 3)
 my_tree.print_tree(my_tree.root)
+puts
