@@ -76,30 +76,51 @@ class Tree
     value < node.value ? find(value, node.left) : find(value, node.right)
   end
 
+  # expect 8 4 67 3 5 23 324 1 7 9 6345
   def level_order(node, &block)
+    # wrong first try
+  end
+
+  # expect 1 3 4 5 7 8 9 23 67 324 6345
+  def inorder(node, &block)
     arr = []
+    arr.push(inorder(node.left, &block)) if node.left
     arr.push(node.value)
     yield(node) if block_given?
-    arr.push(level_order(node.left, &block)) if node.left
-    arr.push(level_order(node.right, &block)) if node.right
+    arr.push(inorder(node.right, &block)) if node.right
 
     arr
   end
 
-  def inorder(&block)
-    # inorder
+  # expect 8 4 3 1 5 7 67 23 9 324 6345
+  def preorder(node, &block)
+    arr = []
+    arr.push(node.value)
+    yield(node) if block_given?
+    arr.push(preorder(node.left, &block)) if node.left
+    arr.push(preorder(node.right, &block)) if node.right
+
+    arr
   end
 
-  def preorder(&block)
-    # preorder
-  end
+  # expect 1 3 7 5 4 9 23 6345 324 67 8
+  def postorder(node, &block)
+    arr = []
+    arr.push(postorder(node.left, &block)) if node.left
+    arr.push(postorder(node.right, &block)) if node.right
+    arr.push(node.value)
+    yield(node) if block_given?
 
-  def postorder(&block)
-    # postorder
+    arr
   end
 
   def height(node)
-    # height
+    return 0 unless node
+
+    lheight = height(node.left)
+    rheight = height(node.right)
+
+    lheight > rheight ? (return lheight + 1) : (return rheight + 1)
   end
 
   def depth(node)
@@ -125,10 +146,11 @@ end
 
 input_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 my_tree = Tree.new(input_array)
-my_tree.print_tree(my_tree.root)
-puts
-my_tree.delete(my_tree.root, 3)
+# my_tree.print_tree(my_tree.root)
+# puts
+# my_tree.delete(my_tree.root, 3)
 my_tree.print_tree(my_tree.root)
 puts
 # puts "find = #{my_tree.find(7)}"
-my_tree.level_order(my_tree.root) { |node| puts "node value = #{node.value}" }
+my_tree.postorder(my_tree.root) { |node| puts "node value = #{node.value}" }
+puts "height = #{my_tree.height(my_tree.root)}"
