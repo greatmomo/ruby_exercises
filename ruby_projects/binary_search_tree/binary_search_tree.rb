@@ -148,6 +148,12 @@ class Tree
 
     Tree.new(arr)
   end
+
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
 end
 
 # The ultimate test
@@ -171,3 +177,5 @@ print "level_order = #{my_tree.level_order(my_tree.root)}\n"
 print "preorder = #{my_tree.preorder(my_tree.root)}\n"
 print "postorder = #{my_tree.postorder(my_tree.root)}\n"
 print "inorder = #{my_tree.inorder(my_tree.root)}\n"
+
+# my_tree.pretty_print(my_tree.root)
