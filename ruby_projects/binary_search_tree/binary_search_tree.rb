@@ -90,7 +90,7 @@ class Tree
       queue.push(node.left) if node.left
       queue.push(node.right) if node.right
     end
-    arr
+    arr.flatten
   end
 
   # expect 1 3 4 5 7 8 9 23 67 324 6345
@@ -101,7 +101,7 @@ class Tree
     yield(node) if block_given?
     arr.push(inorder(node.right, &block)) if node.right
 
-    arr
+    arr.flatten
   end
 
   # expect 8 4 3 1 5 7 67 23 9 324 6345
@@ -112,7 +112,7 @@ class Tree
     arr.push(preorder(node.left, &block)) if node.left
     arr.push(preorder(node.right, &block)) if node.right
 
-    arr
+    arr.flatten
   end
 
   # expect 1 3 7 5 4 9 23 6345 324 67 8
@@ -123,7 +123,7 @@ class Tree
     arr.push(node.value)
     yield(node) if block_given?
 
-    arr
+    arr.flatten
   end
 
   def height(node)
@@ -144,15 +144,9 @@ class Tree
   end
 
   def rebalance
-    # rebalance
-  end
+    arr = self.inorder(self.root)
 
-  def print_tree(root)
-    return unless root
-
-    print_tree(root.left)
-    print "#{root.value} "
-    print_tree(root.right)
+    Tree.new(arr)
   end
 end
 
@@ -161,7 +155,7 @@ my_tree = Tree.new(input_array)
 # my_tree.print_tree(my_tree.root)
 # puts
 # my_tree.delete(my_tree.root, 3)
-my_tree.print_tree(my_tree.root)
+print my_tree.inorder(my_tree.root)
 puts
 # puts "find = #{my_tree.find(7)}"
-my_tree.level_order(my_tree.root) { |node| puts "node value = #{node.value}" }
+print "#{my_tree.level_order(my_tree.root)}\n" # { |node| puts "node value = #{node.value}" }
