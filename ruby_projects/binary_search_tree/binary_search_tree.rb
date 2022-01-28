@@ -150,12 +150,24 @@ class Tree
   end
 end
 
-input_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-my_tree = Tree.new(input_array)
-# my_tree.print_tree(my_tree.root)
-# puts
-# my_tree.delete(my_tree.root, 3)
-print my_tree.inorder(my_tree.root)
-puts
-# puts "find = #{my_tree.find(7)}"
-print "#{my_tree.level_order(my_tree.root)}\n" # { |node| puts "node value = #{node.value}" }
+# The ultimate test
+my_tree = Tree.new((Array.new(15) { rand(1..100) }))
+puts "balanced? = #{my_tree.balanced?}"
+print "level_order = #{my_tree.level_order(my_tree.root)}\n"
+print "preorder = #{my_tree.preorder(my_tree.root)}\n"
+print "postorder = #{my_tree.postorder(my_tree.root)}\n"
+print "inorder = #{my_tree.inorder(my_tree.root)}\n"
+my_tree.insert(169)
+my_tree.insert(845)
+my_tree.insert(145)
+my_tree.insert(542)
+my_tree.insert(923)
+puts "inserted 169, 845, 145, 542, 923"
+puts "balanced? = #{my_tree.balanced?}"
+puts "rebalancing"
+my_tree = my_tree.rebalance
+puts "balanced? = #{my_tree.balanced?}"
+print "level_order = #{my_tree.level_order(my_tree.root)}\n"
+print "preorder = #{my_tree.preorder(my_tree.root)}\n"
+print "postorder = #{my_tree.postorder(my_tree.root)}\n"
+print "inorder = #{my_tree.inorder(my_tree.root)}\n"
