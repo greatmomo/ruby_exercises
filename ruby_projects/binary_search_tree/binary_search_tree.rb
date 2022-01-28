@@ -76,8 +76,14 @@ class Tree
     value < node.value ? find(value, node.left) : find(value, node.right)
   end
 
-  def level_order(&block)
-    # yield something
+  def level_order(node, &block)
+    arr = []
+    arr.push(node.value)
+    yield(node) if block_given?
+    arr.push(level_order(node.left, &block)) if node.left
+    arr.push(level_order(node.right, &block)) if node.right
+
+    arr
   end
 
   def inorder(&block)
@@ -124,4 +130,5 @@ puts
 my_tree.delete(my_tree.root, 3)
 my_tree.print_tree(my_tree.root)
 puts
-puts "find = #{my_tree.find(7)}"
+# puts "find = #{my_tree.find(7)}"
+my_tree.level_order(my_tree.root) { |node| puts "node value = #{node.value}" }
