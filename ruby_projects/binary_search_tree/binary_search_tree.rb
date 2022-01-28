@@ -78,7 +78,19 @@ class Tree
 
   # expect 8 4 67 3 5 23 324 1 7 9 6345
   def level_order(node, &block)
-    # wrong first try
+    return nil unless node
+
+    queue = []
+    queue.push(node)
+    arr = []
+    while !queue.empty?
+      node = queue.shift
+      arr.push(node.value)
+      yield(node) if block_given?
+      queue.push(node.left) if node.left
+      queue.push(node.right) if node.right
+    end
+    arr
   end
 
   # expect 1 3 4 5 7 8 9 23 67 324 6345
@@ -152,5 +164,4 @@ my_tree = Tree.new(input_array)
 my_tree.print_tree(my_tree.root)
 puts
 # puts "find = #{my_tree.find(7)}"
-my_tree.postorder(my_tree.root) { |node| puts "node value = #{node.value}" }
-puts "height = #{my_tree.height(my_tree.root)}"
+my_tree.level_order(my_tree.root) { |node| puts "node value = #{node.value}" }
