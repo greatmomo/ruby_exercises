@@ -135,12 +135,33 @@ class Tree
     lheight > rheight ? (return lheight + 1) : (return rheight + 1)
   end
 
-  def depth(node)
-    # depth
+  def depth(input_node)
+    return nil unless input_node
+    
+    node = self.root
+    level = 0
+    queue = []
+    queue.push([node, 0])
+    while !queue.empty?
+      node, level = queue.shift
+      return level if node == input_node
+      queue.push([node.left, level + 1]) if node.left
+      queue.push([node.right, level + 1]) if node.right
+    end
   end
 
   def balanced?
-    # balanced
+    # for every node check left.height - right.height, must be between -1 and 1
+    node = self.root
+    queue = []
+    queue.push(node)
+    while !queue.empty?
+      node = queue.shift
+      return false unless (height(node.left) - height(node.right)).between?(-1, 1)
+      queue.push(node.left) if node.left
+      queue.push(node.right) if node.right
+    end
+    return true
   end
 
   def rebalance
