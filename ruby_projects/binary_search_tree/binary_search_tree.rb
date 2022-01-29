@@ -77,13 +77,13 @@ class Tree
   end
 
   # expect 8 4 67 3 5 23 324 1 7 9 6345
-  def level_order(node, &block)
+  def level_order(node)
     return nil unless node
 
     queue = []
     queue.push(node)
     arr = []
-    while !queue.empty?
+    until queue.empty?
       node = queue.shift
       arr.push(node.value)
       yield(node) if block_given?
@@ -137,35 +137,36 @@ class Tree
 
   def depth(input_node)
     return nil unless input_node
-    
-    node = self.root
+
+    node = root
     level = 0
     queue = []
     queue.push([node, 0])
-    while !queue.empty?
+    until queue.empty?
       node, level = queue.shift
       return level if node == input_node
+
       queue.push([node.left, level + 1]) if node.left
       queue.push([node.right, level + 1]) if node.right
     end
   end
 
   def balanced?
-    # for every node check left.height - right.height, must be between -1 and 1
-    node = self.root
+    node = root
     queue = []
     queue.push(node)
-    while !queue.empty?
+    until queue.empty?
       node = queue.shift
       return false unless (height(node.left) - height(node.right)).between?(-1, 1)
+
       queue.push(node.left) if node.left
       queue.push(node.right) if node.right
     end
-    return true
+    true
   end
 
   def rebalance
-    arr = self.inorder(self.root)
+    arr = inorder(root)
 
     Tree.new(arr)
   end
@@ -189,9 +190,9 @@ my_tree.insert(845)
 my_tree.insert(145)
 my_tree.insert(542)
 my_tree.insert(923)
-puts "inserted 169, 845, 145, 542, 923"
+puts 'inserted 169, 845, 145, 542, 923'
 puts "balanced? = #{my_tree.balanced?}"
-puts "rebalancing"
+puts 'rebalancing'
 my_tree = my_tree.rebalance
 puts "balanced? = #{my_tree.balanced?}"
 print "level_order = #{my_tree.level_order(my_tree.root)}\n"
