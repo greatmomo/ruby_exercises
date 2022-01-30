@@ -37,7 +37,7 @@ end
 
 board = Board.new
 
-board.nodes.each { |node| puts "#{node.value}" }
+board.nodes.each { |node| node.value[-1] == 7 ? (print "#{node.value}\n") : (print "#{node.value} ") }
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
