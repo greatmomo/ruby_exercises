@@ -11,14 +11,14 @@ require_relative 'node'
 class Board
   attr_accessor :nodes, :board_size
 
-  def initialize(size)
-    @nodes = []
+  def initialize(size = 8)
+    @nodes = {}
     @board_size = 0
     build_board(size)
   end
 
   def add_node(value)
-    @nodes << Node.new(value)
+    @nodes[value] = Node.new(value)
   end
 
   def build_board(n)
@@ -34,12 +34,13 @@ class Board
     # for each node, check if [+-1|2, +-1|2] is on the board
     # if it is, add an edge to that node
     #   how do I do this efficiently to actually link all the nodes properly and not just the values?
+    #   make nodes a hash instead of an array?
   end
 end
 
-board = Board.new(8)
+board = Board.new
 
-board.nodes.each { |node| node.value[-1] == (board.board_size - 1) ? (print "#{node.value}\n") : (print "#{node.value} ") }
+board.nodes.each { |key, node| node.value[-1] == (board.board_size - 1) ? (print "#{node.value}\n") : (print "#{node.value} ") }
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
