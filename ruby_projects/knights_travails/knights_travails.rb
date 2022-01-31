@@ -9,23 +9,25 @@ require_relative 'node'
 
 # Graph class for knight's travails
 class Board
-  attr_accessor :nodes
+  attr_accessor :nodes, :board_size
 
-  def initialize
+  def initialize(size)
     @nodes = []
-    build_board
+    @board_size = 0
+    build_board(size)
   end
 
   def add_node(value)
     @nodes << Node.new(value)
   end
 
-  def build_board
-    (0..7).each do |i|
-      (0..7).each do |j|
+  def build_board(n)
+    (0..n-1).each do |i|
+      (0..n-1).each do |j|
         add_node([i,j])
       end
-    end    
+    end
+    @board_size = n
   end
 
   def build_moveset
@@ -35,9 +37,9 @@ class Board
   end
 end
 
-board = Board.new
+board = Board.new(8)
 
-board.nodes.each { |node| node.value[-1] == 7 ? (print "#{node.value}\n") : (print "#{node.value} ") }
+board.nodes.each { |node| node.value[-1] == (board.board_size - 1) ? (print "#{node.value}\n") : (print "#{node.value} ") }
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
