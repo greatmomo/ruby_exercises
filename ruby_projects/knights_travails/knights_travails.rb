@@ -56,12 +56,9 @@ board = Board.new
 
 # board.nodes.each { |key, node| key[-1] == (board.board_size - 1) ? (print "key: #{key}\n") : (print "key: #{key} ") }
 
-arr1 = [1,2]
-arr2 = [1,2]
-
 board.build_moveset
 
-board.nodes[[5,5]].neighbors.each { |node| puts "#{node.value}" }
+board.nodes[[7,7]].neighbors.each { |node| puts "#{node.value}" }
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
