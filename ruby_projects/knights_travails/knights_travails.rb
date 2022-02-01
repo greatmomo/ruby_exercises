@@ -17,8 +17,8 @@ class Board
     build_board(size)
   end
 
-  def add_node(value)
-    @nodes[value] = Node.new(value)
+  def add_node(key)
+    @nodes[key] = Node.new(key)
   end
 
   def build_board(n)
@@ -31,16 +31,37 @@ class Board
   end
 
   def build_moveset
-    # for each node, check if [+-1|2, +-1|2] is on the board
-    # if it is, add an edge to that node
-    #   how do I do this efficiently to actually link all the nodes properly and not just the values?
-    #   make nodes a hash instead of an array?
+    directions = [[1,2],[-1,2],[1,-2],[-1,-2],[2,1],[-2,1],[2,-1],[-2,-1]]
+    nodes.each do |key, node|
+      directions.each do |dir|
+        temp = sum_arrays(key, dir)
+        node.add_edge(nodes[temp]) if on_board?(temp)
+      end
+    end
+  end
+
+  def sum_arrays(a1, a2)
+    temp = a1.zip(a2)
+    temp.map { |e1,e2| (e1.is_a? Array) ? sum_arrays(e1,e2) : e1+e2 }
+  end
+
+  def on_board?(arr)
+    return true if (arr[0] >= 0 && arr[0] < board_size) && (arr[1] >= 0 && arr[1] < board_size)
+    
+    false
   end
 end
 
 board = Board.new
 
-board.nodes.each { |key, node| node.value[-1] == (board.board_size - 1) ? (print "#{node.value}\n") : (print "#{node.value} ") }
+# board.nodes.each { |key, node| key[-1] == (board.board_size - 1) ? (print "key: #{key}\n") : (print "key: #{key} ") }
+
+arr1 = [1,2]
+arr2 = [1,2]
+
+board.build_moveset
+
+board.nodes[[5,5]].neighbors.each { |node| puts "#{node.value}" }
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
