@@ -50,6 +50,18 @@ class Board
     
     false
   end
+
+  def get_shortest_path
+    # call get_paths, and use the returned array
+    # find the shortest nested array, and that is the result
+  end
+
+  def get_paths(node, traveled = [])
+    # recursive function, always pass traveled nodes along so we know where not to repeat
+    # for each valid neighbor, call this function and add the current node to traveled
+    # upon reaching the target node, return the traveled array all the way up
+    # at the top level, the traveled array should be appended to an array
+  end
 end
 
 board = Board.new
