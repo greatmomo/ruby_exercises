@@ -51,12 +51,18 @@ class Board
     false
   end
 
-  def get_shortest_path
+  def knight_moves(start_node, target_node)
+    return 'Invalid entry' unless on_board?(start_node) || on_board?(target_node)
     # call get_paths, and use the returned array
+    paths = get_paths(nodes[start_node], nodes[target_node])
     # find the shortest nested array, and that is the result
   end
 
-  def get_paths(node, traveled = [])
+  def get_paths(node, target, traveled = [])
+    traveled.push(node.value)
+    traveled.push(node.neighbors[0].value)
+    traveled.push(target.value)
+    traveled
     # recursive function, always pass traveled nodes along so we know where not to repeat
     # for each valid neighbor, call this function and add the current node to traveled
     # upon reaching the target node, return the traveled array all the way up
@@ -66,11 +72,9 @@ end
 
 board = Board.new
 
-# board.nodes.each { |key, node| key[-1] == (board.board_size - 1) ? (print "key: #{key}\n") : (print "key: #{key} ") }
-
 board.build_moveset
 
-board.nodes[[7,7]].neighbors.each { |node| puts "#{node.value}" }
+puts "moves = #{board.knight_moves([0,0],[3,3])}"
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
@@ -82,3 +86,6 @@ board.nodes[[7,7]].neighbors.each { |node| puts "#{node.value}" }
 #     [4,5]
 #     [2,4]
 #     [4,3]
+
+# board.nodes.each { |key, node| key[-1] == (board.board_size - 1) ? (print "key: #{key}\n") : (print "key: #{key} ") }
+# board.nodes[[7,7]].neighbors.each { |node| puts "#{node.value}" }
