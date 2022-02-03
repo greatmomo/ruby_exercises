@@ -2,11 +2,6 @@
 
 require_relative 'node'
 
-# try all 8 possible positions
-# if not already visited and inside board
-# add to queue with distance + 1 from parent state
-# finally return distance when popped from queue
-
 # Graph class for knight's travails
 class Board
   attr_accessor :nodes, :board_size
@@ -53,20 +48,27 @@ class Board
 
   def knight_moves(start_node, target_node)
     return 'Invalid entry' unless on_board?(start_node) || on_board?(target_node)
-    # call get_paths, and use the returned array
+    
     paths = get_paths(nodes[start_node], nodes[target_node])
-    # find the shortest nested array, and that is the result
+    shortest = paths.sort { |x,y| x.size <=> y.size }
+    puts "  => You made it in #{shortest.length} moves! Here's your path:"
+    shortest[0].each { |value| puts "\t#{value}" }
   end
 
   def get_paths(node, target, traveled = [])
     traveled.push(node.value)
     traveled.push(node.neighbors[0].value)
     traveled.push(target.value)
-    traveled
+    traveled = [[[0,0],[1,2],[3,3]],[[0,0],[1,2]]]
     # recursive function, always pass traveled nodes along so we know where not to repeat
     # for each valid neighbor, call this function and add the current node to traveled
     # upon reaching the target node, return the traveled array all the way up
     # at the top level, the traveled array should be appended to an array
+
+    # try all '8' possible positions
+    # if not already visited and inside board
+    # add to queue with distance + 1 from parent state
+    # finally return distance when popped from queue
   end
 end
 
@@ -74,7 +76,8 @@ board = Board.new
 
 board.build_moveset
 
-puts "moves = #{board.knight_moves([0,0],[3,3])}"
+puts "knight_moves([0,0],[3,3]):"
+board.knight_moves([0,0],[3,3])
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
