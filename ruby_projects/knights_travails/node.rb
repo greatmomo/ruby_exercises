@@ -2,14 +2,19 @@
 
 # node class for Graph
 class Node
-  attr_accessor :value, :neighbors
+  attr_accessor :value, :neighbours
 
   def initialize(value)
     @value = value
-    @neighbors = []
+    @neighbours = []
   end
 
-  def add_edge(neighbor)
-    @neighbors << neighbor
+  def add_edge(neighbour)
+    @neighbours << neighbour
+  end
+
+  def neighbour_values
+    ret = @neighbours.map { |node| node.value }
+    ret
   end
 end

@@ -56,10 +56,27 @@ class Board
   end
 
   def get_paths(node, target, traveled = [])
-    traveled.push(node.value)
-    traveled.push(node.neighbors[0].value)
-    traveled.push(target.value)
-    traveled = [[[0,0],[1,2],[3,3]],[[0,0],[1,2]]]
+    # $stdout.flush
+    # sleep(1)
+
+    solutions = []
+
+    # if we reached the correct node, return this solution
+    return traveled if node == target
+    traveled << node.value
+
+    available = node.neighbour_values - traveled
+    puts "available = #{available}, neighbours = #{node.neighbour_values}, traveled = #{traveled}"
+    return nil unless available
+
+    available.each do |value|
+      next if traveled.include? value
+      # for each available move, call recursively and push result to an array
+      check = get_paths(nodes[value], target, traveled)
+      solutions.push(check) unless check == nil
+    end
+
+    solutions
     # recursive function, always pass traveled nodes along so we know where not to repeat
     # for each valid neighbor, call this function and add the current node to traveled
     # upon reaching the target node, return the traveled array all the way up
