@@ -58,6 +58,14 @@ class Board
   end
 
   def get_paths(node, target, traveled = [])
+    # rebuild this function as follows
+    # create a solutions[]
+    # create a queue[]
+    # add the first node to the queue, with an array of that node [node, [node.value]]
+    # while the queue has something in it
+    # - add valid neighbours to the queue as [node, visited + node.value]
+    # - if the target is found, push the current visited array to solutions[]
+
     solutions = []
 
     # if we reached the correct node, return this solution
