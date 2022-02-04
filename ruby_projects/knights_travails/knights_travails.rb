@@ -50,30 +50,31 @@ class Board
     return 'Invalid entry' unless on_board?(start_node) || on_board?(target_node)
     
     paths = get_paths(nodes[start_node], nodes[target_node])
+    puts "paths.size = #{paths.size}"
     shortest = paths.sort { |x,y| x.size <=> y.size }
-    puts "  => You made it in #{shortest.length} moves! Here's your path:"
-    shortest[0].each { |value| puts "\t#{value}" }
+    # puts "  => You made it in #{shortest.length} moves! Here's your path:"
+    # shortest[0].each { |value| puts "\t#{value}" }
+    # puts "\t#{target_node.value}"
   end
 
   def get_paths(node, target, traveled = [])
-    # $stdout.flush
-    # sleep(1)
-
     solutions = []
 
     # if we reached the correct node, return this solution
+    # puts "traveled.length: #{traveled.length}, node.value: #{node.value}, traveled: #{traveled}" if node == target
     return traveled if node == target
     traveled << node.value
 
     available = node.neighbour_values - traveled
-    puts "available = #{available}, neighbours = #{node.neighbour_values}, traveled = #{traveled}"
+    # puts "available = #{available}, neighbours = #{node.neighbour_values}, traveled = #{traveled}"
     return nil unless available
 
     available.each do |value|
       next if traveled.include? value
       # for each available move, call recursively and push result to an array
       check = get_paths(nodes[value], target, traveled)
-      solutions.push(check) unless check == nil
+      puts "check = #{check}" unless check.empty?
+      solutions.push(check) unless check.empty?
     end
 
     solutions
