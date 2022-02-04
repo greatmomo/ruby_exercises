@@ -62,7 +62,7 @@ class Board
     # create a solutions[]
     # create a queue[]
     # add the first node to the queue, with an array of that node [node, [node.value]]
-    # while the queue has something in it
+    # until queue.empty? do
     # - add valid neighbours to the queue as [node, visited + node.value]
     # - if the target is found, push the current visited array to solutions[]
 
@@ -90,11 +90,6 @@ class Board
     # for each valid neighbor, call this function and add the current node to traveled
     # upon reaching the target node, return the traveled array all the way up
     # at the top level, the traveled array should be appended to an array
-
-    # try all '8' possible positions
-    # if not already visited and inside board
-    # add to queue with distance + 1 from parent state
-    # finally return distance when popped from queue
   end
 end
 
