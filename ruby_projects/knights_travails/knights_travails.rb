@@ -47,7 +47,7 @@ class Board
   end
 
   def knight_moves(start_node, target_node)
-    return 'Invalid entry' unless on_board?(start_node) || on_board?(target_node)
+    return puts 'Invalid entry' unless on_board?(start_node) && on_board?(target_node)
     
     paths = get_paths(nodes[start_node], nodes[target_node])
     shortest = paths.sort { |x,y| x.size <=> y.size }[0]
@@ -58,18 +58,20 @@ class Board
 
   def get_paths(start, target)
     solutions = []
+    shortest = 50
     queue = [[start, [start.value]]]
 
     until queue.empty? do
 
       node, visited = queue.shift
 
-      next if visited.length > 10
+      next if visited.length > shortest
 
       visited.push(node.value) unless visited.include? node.value
 
       if node == target
         solutions.push(visited)
+        shortest = solutions.sort { |x,y| x.size <=> y.size }[0].length
         next
       end
 
@@ -86,8 +88,8 @@ board = Board.new
 
 board.build_moveset
 
-puts "knight_moves([0,0],[8,8]):"
-board.knight_moves([0,0],[8,8])
+puts "knight_moves([0,0],[6,7]):"
+board.knight_moves([0,0],[6,7])
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
