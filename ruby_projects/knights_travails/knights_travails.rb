@@ -50,29 +50,21 @@ class Board
     return 'Invalid entry' unless on_board?(start_node) || on_board?(target_node)
     
     paths = get_paths(nodes[start_node], nodes[target_node])
-    puts "paths.size = #{paths.size}, paths = #{paths}"
-    shortest = paths.sort { |x,y| x.size <=> y.size }
-    puts "  => You made it in #{shortest.length} moves! Here's your path:"
-    shortest[0].each { |value| puts "\t#{value}" }
+    shortest = paths.sort { |x,y| x.size <=> y.size }[0]
+    puts "  => You made it in #{shortest.length - 1} moves! Here's your path:"
+    shortest.each { |value| puts "\t#{value}" }
     # puts "\t#{target_node.value}"
   end
 
   def get_paths(start, target)
-    # rebuild this function as follows:
-    # create a solutions[]
-    # create a queue[]
-    # add the first node to the queue, with an array of that node [node, [node.value]]
-    # until queue.empty? do
-    # - add valid neighbours to the queue as [node, visited + node.value]
-    # - if the target is found, push the current visited array to solutions[]
-
     solutions = []
     queue = [[start, [start.value]]]
 
     until queue.empty? do
-      # $stdout.flush
-      # sleep(1)
+
       node, visited = queue.shift
+
+      next if visited.length > 10
 
       visited.push(node.value) unless visited.include? node.value
 
@@ -82,11 +74,8 @@ class Board
       end
 
       available = node.neighbour_values - visited
-      puts "available: #{available}, neighbours: #{node.neighbour_values}, node.value: #{node.value}"
       available.each_with_index do |value, index|
-        puts "available.each value: #{value}"
         queue.push([nodes[value], visited.dup])
-        puts "queue: #{queue[index][0].value}, #{queue[index][1]}"
       end
     end
     solutions
@@ -97,8 +86,8 @@ board = Board.new
 
 board.build_moveset
 
-puts "knight_moves([0,0],[3,3]):"
-board.knight_moves([0,0],[3,3])
+puts "knight_moves([0,0],[8,8]):"
+board.knight_moves([0,0],[8,8])
 
 # knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
 # knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
