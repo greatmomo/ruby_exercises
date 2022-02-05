@@ -50,15 +50,15 @@ class Board
     return 'Invalid entry' unless on_board?(start_node) || on_board?(target_node)
     
     paths = get_paths(nodes[start_node], nodes[target_node])
-    puts "paths.size = #{paths.size}"
+    puts "paths.size = #{paths.size}, paths = #{paths}"
     shortest = paths.sort { |x,y| x.size <=> y.size }
-    # puts "  => You made it in #{shortest.length} moves! Here's your path:"
-    # shortest[0].each { |value| puts "\t#{value}" }
+    puts "  => You made it in #{shortest.length} moves! Here's your path:"
+    shortest[0].each { |value| puts "\t#{value}" }
     # puts "\t#{target_node.value}"
   end
 
-  def get_paths(node, target, traveled = [])
-    # rebuild this function as follows
+  def get_paths(start, target)
+    # rebuild this function as follows:
     # create a solutions[]
     # create a queue[]
     # add the first node to the queue, with an array of that node [node, [node.value]]
@@ -67,29 +67,29 @@ class Board
     # - if the target is found, push the current visited array to solutions[]
 
     solutions = []
+    queue = [[start, [start.value]]]
 
-    # if we reached the correct node, return this solution
-    # puts "traveled.length: #{traveled.length}, node.value: #{node.value}, traveled: #{traveled}" if node == target
-    return traveled if node == target
-    traveled << node.value
+    until queue.empty? do
+      # $stdout.flush
+      # sleep(1)
+      node, visited = queue.shift
 
-    available = node.neighbour_values - traveled
-    # puts "available = #{available}, neighbours = #{node.neighbour_values}, traveled = #{traveled}"
-    return nil unless available
+      visited.push(node.value) unless visited.include? node.value
 
-    available.each do |value|
-      next if traveled.include? value
-      # for each available move, call recursively and push result to an array
-      check = get_paths(nodes[value], target, traveled)
-      puts "check = #{check}" unless check.empty?
-      solutions.push(check) unless check.empty?
+      if node == target
+        solutions.push(visited)
+        next
+      end
+
+      available = node.neighbour_values - visited
+      puts "available: #{available}, neighbours: #{node.neighbour_values}, node.value: #{node.value}"
+      available.each_with_index do |value, index|
+        puts "available.each value: #{value}"
+        queue.push([nodes[value], visited.dup])
+        puts "queue: #{queue[index][0].value}, #{queue[index][1]}"
+      end
     end
-
     solutions
-    # recursive function, always pass traveled nodes along so we know where not to repeat
-    # for each valid neighbor, call this function and add the current node to traveled
-    # upon reaching the target node, return the traveled array all the way up
-    # at the top level, the traveled array should be appended to an array
   end
 end
 
