@@ -5,6 +5,7 @@ require_relative 'node'
 # Graph class for knight's travails
 class Board
   attr_accessor :nodes, :board_size
+  DIRECTIONS = [[1,2],[-1,2],[1,-2],[-1,-2],[2,1],[-2,1],[2,-1],[-2,-1]].freeze
 
   def initialize(size = 8)
     @nodes = {}
@@ -26,9 +27,8 @@ class Board
   end
 
   def build_moveset
-    directions = [[1,2],[-1,2],[1,-2],[-1,-2],[2,1],[-2,1],[2,-1],[-2,-1]]
     nodes.each do |key, node|
-      directions.each do |dir|
+      DIRECTIONS.each do |dir|
         temp = sum_arrays(key, dir)
         node.add_edge(nodes[temp]) if on_board?(temp)
       end
@@ -90,17 +90,3 @@ board.build_moveset
 
 puts "knight_moves([0,0],[6,7]):"
 board.knight_moves([0,0],[6,7])
-
-# knight_moves([0,0],[1,2]) == [[0,0],[1,2]]
-# knight_moves([0,0],[3,3]) == [[0,0],[1,2],[3,3]]
-# knight_moves([3,3],[0,0]) == [[3,3],[1,2],[0,0]]
-
-# > knight_moves([3,3],[4,3])
-#   => You made it in 3 moves!  Here's your path:
-#     [3,3]
-#     [4,5]
-#     [2,4]
-#     [4,3]
-
-# board.nodes.each { |key, node| key[-1] == (board.board_size - 1) ? (print "key: #{key}\n") : (print "key: #{key} ") }
-# board.nodes[[7,7]].neighbors.each { |node| puts "#{node.value}" }
