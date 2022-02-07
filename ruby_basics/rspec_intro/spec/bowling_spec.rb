@@ -1,4 +1,5 @@
-require 'bowling'
+#spec/bowling_spec.rb
+require './lib/bowling'
 
 RSpec.describe Bowling, "#score" do
   context "with no strikes or spares" do
