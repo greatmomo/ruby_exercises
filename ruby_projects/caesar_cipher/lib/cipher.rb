@@ -1,6 +1,6 @@
 def caesar_cipher(input_string, shift)
   chars = input_string.split('')
-  puts "Original: #{input_string}"
+  # puts "Original: #{input_string}"
 
   #puts chars
   chars.map! do |char|
@@ -27,7 +27,8 @@ def caesar_cipher(input_string, shift)
     ascii.chr
   end
 
-  print "Cipher: #{chars.join('')}\n"
+  # print "Cipher: #{chars.join('')}\n"
+  chars.join('')
 
   #puts "a: #{'a'.ord}, z: #{'z'.ord}, A: #{'A'.ord}, Z: #{'Z'.ord}"
 end
