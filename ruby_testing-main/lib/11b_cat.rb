@@ -9,10 +9,10 @@ class Cat < Pet
   end
 
   def hiding?
-    true
+    false
   end
 
   def hungry?
-    false
+    true
   end
 end
