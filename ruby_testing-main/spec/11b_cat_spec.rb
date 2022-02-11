@@ -47,11 +47,11 @@ describe Cat do
 
   # remove the 'x' before running this test
   it 'is not hungry' do
-    expect(pussy).to_not be_hungry
+    expect(pussy).to be_hungry
   end
 
   # remove the 'x' before running this test
   it 'is hiding' do
-    expect(pussy).to be_hiding
+    expect(pussy).to_not be_hiding
   end
 end
