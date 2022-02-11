@@ -35,17 +35,23 @@ end
 
 describe Cat do
   # Create a subject with your choice of cat name and optional breed/color.
+  subject(:pussy) { described_class.new('Sexy', 'hairless', 'pink') }
 
   # Write a test using the second shared_example to test that cat responds to
   # talk ('meow').
-  context '' do
+  context 'when a cat is asked to talk' do
+    it 'says meow' do
+      expect(pussy.talk).to eql('meow')
+    end
   end
 
   # remove the 'x' before running this test
-  xit 'is not hungry' do
+  it 'is not hungry' do
+    expect(pussy).to_not be_hungry
   end
 
   # remove the 'x' before running this test
-  xit 'is hiding' do
+  it 'is hiding' do
+    expect(pussy).to be_hiding
   end
 end
