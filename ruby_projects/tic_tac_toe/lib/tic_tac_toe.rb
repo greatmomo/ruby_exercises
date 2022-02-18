@@ -26,11 +26,11 @@ class Board
     puts
   end
 
-  def self.board
+  def board
     @@board
   end
 
-  def self.set_board(value, index)
+  def set_board(value, index)
     @@board[index] = value
   end
 end
@@ -138,8 +138,6 @@ class Game
   end
 end
 
-Game.intro
-
-Board.print_board
-
-Game.game_loop
+# Game.intro
+# Board.print_board
+# Game.game_loop
