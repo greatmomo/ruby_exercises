@@ -50,12 +50,54 @@ describe Game do
   end
 
   describe '#game_loop' do
+    context 'when the game is over, print the winner' do
+      before do
+        @@player1 = Player.new('Momo', '@')
+        @@player2 = Player.new('Ori', '&')
+        @@victory_state = true
+      end
+
+      it 'no victor means a tie' do
+        @@victor = 0
+        tie = "It's a tie!"
+        expect(test_game).to receive(:puts).with(tie).once
+        test_game.game_loop
+      end
+
+      it 'player1 victory' do
+        @@victor = 1
+        message = "#{@@player1.name} wins!"
+        expect(test_game).to receive(:puts).with(message).once
+        test_game.game_loop
+      end
+
+      it 'player2 victory' do
+        @@victor = 2
+        message = "#{@@player2.name} wins!"
+        expect(test_game).to receive(:puts).with(message).once
+        test_game.game_loop
+      end
+    end
   end
 
   describe '#play_prompt' do
+    # just a simple gets, probably doesn't need a test
   end
 
   describe '#input_valid?' do
+    context 'returns false for invalid input and true for valid input' do
+      before do
+        invalid_input2 = 'a'
+        Board.set_board('@', 2)
+        invalid_input3 = 3
+        valid_input = 5
+      end
+
+      it 'when input is too long' do
+        value = 12
+        expect(test_game.input_valid?(value)).to eql(false)
+      end
+    end
   end
 
   describe '#game_over?' do
