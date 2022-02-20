@@ -16,7 +16,7 @@ end
 class Board
   @@board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-  def print_board
+  def self.print_board
     puts
     puts "\t\t\t #{@@board[0]} | #{@@board[1]} | #{@@board[2]}"
     puts "\t\t\t---+---+---"
@@ -26,11 +26,11 @@ class Board
     puts
   end
 
-  def board
+  def self.board
     @@board
   end
 
-  def set_board(value, index)
+  def self.set_board(value, index)
     @@board[index] = value
   end
 end
@@ -43,7 +43,7 @@ class Game
   @@player1 = Player.new('', '')
   @@player2 = Player.new('', '')
 
-  def intro
+  def self.intro
     puts "Let's play Tic-Tac-Toe!"
     puts
     puts 'What is the name of player #1?'
@@ -59,7 +59,7 @@ class Game
     @@player2 = Player.new(name, symbol)
   end
 
-  def game_loop
+  def self.game_loop
     until @@victory_state == true
       input = Game.play_prompt
       next unless input_valid?(input)
