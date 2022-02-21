@@ -50,6 +50,9 @@ describe ConnectFour do
     end
 
     context 'when the user enters a column that is full, then a valid column' do
+      it 'completes loop and displays error message once' do
+        expect()
+      end
     end
   end
 
@@ -83,6 +86,15 @@ describe ConnectFour do
     subject(:game_input) { described_class.new() }
 
     context 'when all columns are full' do
+      it 'returns true' do
+        expect()
+      end
+    end
+
+    context 'when one column is not full' do
+      it 'returns false' do
+        expect()
+      end
     end
   end
 end
