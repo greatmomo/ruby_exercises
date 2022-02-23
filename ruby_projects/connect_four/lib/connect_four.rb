@@ -21,7 +21,13 @@ class ConnectFour
     end
   end
 
+  def player_turn(current_player)
+  end
+
   def verify_input(min, max, input)
     return input if input.between?(min, max)
+  end
+
+  def board_full?
   end
 end

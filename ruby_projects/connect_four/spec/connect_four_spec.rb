@@ -55,13 +55,15 @@ describe ConnectFour do
     subject(:game_input) { described_class.new() }
 
     context 'when user input is valid' do
-      it 'stops loop and does not display error message' do
-        min = game_input.instance_variable_get(:@minimum)
-        max = game_input.instance_variable_get(:@maximum)
-        error_message = "Input error! Please enter a number between #{min} or #{max}."
-        valid_input = '6'
-        expect(game_input).not_to receive(:puts).with(error_message)
-        game_input.player_turn
+      before do
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(valid_input)
+      end
+
+      it 'enters a token in the selected column' do
+        board = game_input.instance_variable_get(:@board)
+        expect(game_input).to change { board[6].length }.by(1)
+        game_input.player_turn(1)
       end
     end
 
@@ -73,11 +75,9 @@ describe ConnectFour do
       end
 
       it 'completes loop and displays error message once' do
-        min = game_input.instance_variable_get(:@minimum)
-        max = game_input.instance_variable_get(:@maximum)
-        error_message = "Input error! Please enter a number between #{min} or #{max}."
-        expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_turn
+        board = game_input.instance_variable_get(:@board)
+        expect(game_input).to change { board[6].length }.by(1)
+        game_input.player_turn(1)
       end
     end
 
@@ -90,7 +90,7 @@ describe ConnectFour do
       it 'completes loop 6 times, then an error when the column is full' do
         error_message = "Input error! The selected column is full!"
         expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_turn
+        game_input.player_turn(1)
       end
     end
   end
