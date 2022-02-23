@@ -27,7 +27,7 @@ describe ConnectFour do
       it 'stops loop and does not display error message' do
         min = game_input.instance_variable_get(:@minimum)
         max = game_input.instance_variable_get(:@maximum)
-        error_message = "Input error! Please enter a number between #{min} or #{max} in a column that is not full."
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
         expect(game_input).not_to receive(:puts).with(error_message)
         game_input.player_input(min, max)
       end
@@ -43,15 +43,54 @@ describe ConnectFour do
       it 'completes loop and displays error message once' do
         min = game_input.instance_variable_get(:@minimum)
         max = game_input.instance_variable_get(:@maximum)
-        error_message = "Input error! Please enter a number between #{min} or #{max} in a column that is not full."
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
         expect(game_input).to receive(:puts).with(error_message).once
         game_input.player_input(min, max)
       end
     end
+  end
+
+  describe '#player_turn' do
+    # Loops until valid input is entered
+    subject(:game_input) { described_class.new() }
+
+    context 'when user input is valid' do
+      it 'stops loop and does not display error message' do
+        min = game_input.instance_variable_get(:@minimum)
+        max = game_input.instance_variable_get(:@maximum)
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
+        valid_input = '6'
+        expect(game_input).not_to receive(:puts).with(error_message)
+        game_input.player_turn
+      end
+    end
+
+    context 'when user inputs an incorrect value once, then a valid input' do
+      before do
+        letter = 'd'
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(letter, valid_input)
+      end
+
+      it 'completes loop and displays error message once' do
+        min = game_input.instance_variable_get(:@minimum)
+        max = game_input.instance_variable_get(:@maximum)
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_turn
+      end
+    end
 
     context 'when the user enters a column that is full, then a valid column' do
-      it 'completes loop and displays error message once' do
-        expect()
+      before do
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
+      end
+
+      it 'completes loop 6 times, then an error when the column is full' do
+        error_message = "Input error! The selected column is full!"
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_turn
       end
     end
   end
@@ -86,14 +125,29 @@ describe ConnectFour do
     subject(:game_input) { described_class.new() }
 
     context 'when all columns are full' do
+      before do
+        # first, fill the board
+        (0..6).each do |valid_input|
+          allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
+        end
+        allow(game_input).to receive(:player_input).and_return(3)
+      end
+
       it 'returns true' do
-        expect()
+        expect(game_input.board_full?).to eql(true)
       end
     end
 
     context 'when one column is not full' do
+      before do
+        # first, fill the board except for last column
+        (0...6).each do |valid_input|
+          allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
+        end
+      end
+
       it 'returns false' do
-        expect()
+        expect(game_input.board_full?).to eql(false)
       end
     end
   end

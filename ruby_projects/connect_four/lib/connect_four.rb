@@ -17,7 +17,7 @@ class ConnectFour
       verified_number = verify_input(min, max, user_input.to_i) if user_input.match?(/^\d+$/)
       return verified_number if verified_number
 
-      puts "Input error! Please enter a number between #{min} or #{max} in a column that is not full."
+      puts "Input error! Please enter a number between #{min} or #{max}."
     end
   end
 
