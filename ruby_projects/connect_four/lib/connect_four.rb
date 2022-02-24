@@ -3,9 +3,10 @@
 require_relative 'player.rb'
 
 class ConnectFour
-  def initialize(minimum = 0, maximum = 6, symbol_p1 = '☭', symbol_p2 = '☪')
+  def initialize(minimum = 0, maximum = 6, height = 6, symbol_p1 = '☭', symbol_p2 = '☪')
     @minimum = minimum
     @maximum = maximum
+    @height = height
     @board = [[],[],[],[],[],[],[]]
     @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
   end
@@ -31,7 +32,12 @@ class ConnectFour
 
   def player_turn(current_player)
     input = player_input(@minimum, @maximum) - 1
-    @board[input] << players[current_player - 1].symbol
+    unless @board[input].length >= @height
+      @board[input] << players[current_player - 1].symbol
+      current_player = current_player == 1 ? 2 : 1
+    else
+      puts "Input error! The selected column is full!"
+    end
   end
 
   def verify_input(min, max, input)

@@ -84,7 +84,9 @@ describe ConnectFour do
       it 'completes loop 6 times, then an error when the column is full' do
         error_message = "Input error! The selected column is full!"
         expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_turn(1)
+        7.times do
+          game_input.player_turn(1)
+        end
       end
     end
   end
