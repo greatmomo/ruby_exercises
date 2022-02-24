@@ -52,6 +52,19 @@ describe ConnectFour do
     end
   end
 
+  describe '#toggle_player' do
+    # this function should switch current_player between 1 and 2 when a valid move is made
+    subject(:game_input) { described_class.new() }
+
+    it 'toggles from 1 to 2' do
+      expect()
+    end
+
+    it 'toggles from 2 to 1' do
+      expect()
+    end
+  end
+
   describe '#player_input' do
     # Located inside #play_game (Public Script Method)
     # Looping Script Method -> Test the behavior of the method
