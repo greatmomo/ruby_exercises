@@ -4,7 +4,16 @@ require_relative '../lib/connect_four.rb'
 
 describe ConnectFour do
   describe '#initialize' do
-    # No test necessary if only creating instance variables.
+    # check if players are created with proper symbols
+    subject(:game_creation) { described_class.new() }
+
+    it 'properly initializes player1 symbol' do
+      expect(game_creation.player1.symbol).to eq('☭')
+    end
+
+    it 'properly initializes player2 symbol' do
+      expect(game_creation.player2.symbol).to eq('☪')
+    end
   end
 
   describe '#play_game' do
@@ -62,22 +71,7 @@ describe ConnectFour do
 
       it 'enters a token in the selected column' do
         board = game_input.instance_variable_get(:@board)
-        expect(game_input).to change { board[6].length }.by(1)
-        game_input.player_turn(1)
-      end
-    end
-
-    context 'when user inputs an incorrect value once, then a valid input' do
-      before do
-        letter = 'd'
-        valid_input = 6
-        allow(game_input).to receive(:player_input).and_return(letter, valid_input)
-      end
-
-      it 'completes loop and displays error message once' do
-        board = game_input.instance_variable_get(:@board)
-        expect(game_input).to change { board[6].length }.by(1)
-        game_input.player_turn(1)
+        expect { game_input.player_turn(1) }.to change { board[6].length }.by(1)
       end
     end
 
@@ -94,7 +88,7 @@ describe ConnectFour do
       end
     end
   end
-
+  
   describe '#verify_input' do
     # Located inside #play_game (Looping Script Method)
     # Query Method -> Test the return value
