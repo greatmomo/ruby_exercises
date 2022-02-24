@@ -7,16 +7,11 @@ class ConnectFour
     @minimum = minimum
     @maximum = maximum
     @board = [[],[],[],[],[],[],[]]
-    @player1 = Player.new(symbol_p1)
-    @player2 = Player.new(symbol_p2)
+    @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
   end
 
-  def player1
-    @player1
-  end
-
-  def player2
-    @player2
+  def players
+    @players
   end
 
   def play_game
@@ -36,7 +31,7 @@ class ConnectFour
 
   def player_turn(current_player)
     input = player_input(@minimum, @maximum) - 1
-    # board[input] << 
+    @board[input] << players[current_player - 1].symbol
   end
 
   def verify_input(min, max, input)

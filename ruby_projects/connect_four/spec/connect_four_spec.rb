@@ -8,11 +8,11 @@ describe ConnectFour do
     subject(:game_creation) { described_class.new() }
 
     it 'properly initializes player1 symbol' do
-      expect(game_creation.player1.symbol).to eq('☭')
+      expect(game_creation.players[0].symbol).to eq('☭')
     end
 
     it 'properly initializes player2 symbol' do
-      expect(game_creation.player2.symbol).to eq('☪')
+      expect(game_creation.players[1].symbol).to eq('☪')
     end
   end
 
@@ -71,7 +71,7 @@ describe ConnectFour do
 
       it 'enters a token in the selected column' do
         board = game_input.instance_variable_get(:@board)
-        expect { game_input.player_turn(1) }.to change { board[6].length }.by(1)
+        expect { game_input.player_turn(1) }.to change { board[5].length }.by(1)
       end
     end
 
