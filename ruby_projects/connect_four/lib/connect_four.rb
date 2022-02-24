@@ -1,14 +1,33 @@
 # frozen_string_literal: true
 
+require_relative 'player.rb'
+
 class ConnectFour
-  def initialize(minimum = 0, maximum = 6)
+  def initialize(minimum = 0, maximum = 6, height = 6, symbol_p1 = '☭', symbol_p2 = '☪')
     @minimum = minimum
     @maximum = maximum
+    @height = height
+    @board = [[],[],[],[],[],[],[]]
+    @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
+  end
+
+  def players
+    @players
   end
 
   def play_game
     # introduction
     # do stuff
+  end
+
+  def player_turn(current_player)
+    input = player_input(@minimum, @maximum) - 1
+    unless @board[input].length >= @height
+      @board[input] << players[current_player - 1].symbol
+      current_player = current_player == 1 ? 2 : 1
+    else
+      puts "Input error! The selected column is full!"
+    end
   end
 
   def player_input(min, max)
@@ -19,9 +38,6 @@ class ConnectFour
 
       puts "Input error! Please enter a number between #{min} or #{max}."
     end
-  end
-
-  def player_turn(current_player)
   end
 
   def verify_input(min, max, input)

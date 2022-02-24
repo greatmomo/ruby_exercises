@@ -4,11 +4,52 @@ require_relative '../lib/connect_four.rb'
 
 describe ConnectFour do
   describe '#initialize' do
-    # No test necessary if only creating instance variables.
+    # check if players are created with proper symbols
+    subject(:game_creation) { described_class.new() }
+
+    it 'properly initializes player1 symbol' do
+      expect(game_creation.players[0].symbol).to eq('☭')
+    end
+
+    it 'properly initializes player2 symbol' do
+      expect(game_creation.players[1].symbol).to eq('☪')
+    end
   end
 
   describe '#play_game' do
     # Public Script Method -> No test necessary, but all methods inside need to be tested
+  end
+
+  describe '#player_turn' do
+    # Loops until valid input is entered
+    subject(:game_input) { described_class.new() }
+
+    context 'when user input is valid' do
+      before do
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(valid_input)
+      end
+
+      it 'enters a token in the selected column' do
+        board = game_input.instance_variable_get(:@board)
+        expect { game_input.player_turn(1) }.to change { board[5].length }.by(1)
+      end
+    end
+
+    context 'when the user enters a column that is full, then a valid column' do
+      before do
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
+      end
+
+      it 'completes loop 6 times, then an error when the column is full' do
+        error_message = "Input error! The selected column is full!"
+        expect(game_input).to receive(:puts).with(error_message).once
+        7.times do
+          game_input.player_turn(1)
+        end
+      end
+    end
   end
 
   describe '#player_input' do
@@ -49,52 +90,7 @@ describe ConnectFour do
       end
     end
   end
-
-  describe '#player_turn' do
-    # Loops until valid input is entered
-    subject(:game_input) { described_class.new() }
-
-    context 'when user input is valid' do
-      before do
-        valid_input = 6
-        allow(game_input).to receive(:player_input).and_return(valid_input)
-      end
-
-      it 'enters a token in the selected column' do
-        board = game_input.instance_variable_get(:@board)
-        expect(game_input).to change { board[6].length }.by(1)
-        game_input.player_turn(1)
-      end
-    end
-
-    context 'when user inputs an incorrect value once, then a valid input' do
-      before do
-        letter = 'd'
-        valid_input = 6
-        allow(game_input).to receive(:player_input).and_return(letter, valid_input)
-      end
-
-      it 'completes loop and displays error message once' do
-        board = game_input.instance_variable_get(:@board)
-        expect(game_input).to change { board[6].length }.by(1)
-        game_input.player_turn(1)
-      end
-    end
-
-    context 'when the user enters a column that is full, then a valid column' do
-      before do
-        valid_input = 6
-        allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
-      end
-
-      it 'completes loop 6 times, then an error when the column is full' do
-        error_message = "Input error! The selected column is full!"
-        expect(game_input).to receive(:puts).with(error_message).once
-        game_input.player_turn(1)
-      end
-    end
-  end
-
+  
   describe '#verify_input' do
     # Located inside #play_game (Looping Script Method)
     # Query Method -> Test the return value
