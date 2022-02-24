@@ -20,6 +20,38 @@ describe ConnectFour do
     # Public Script Method -> No test necessary, but all methods inside need to be tested
   end
 
+  describe '#player_turn' do
+    # Loops until valid input is entered
+    subject(:game_input) { described_class.new() }
+
+    context 'when user input is valid' do
+      before do
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(valid_input)
+      end
+
+      it 'enters a token in the selected column' do
+        board = game_input.instance_variable_get(:@board)
+        expect { game_input.player_turn(1) }.to change { board[5].length }.by(1)
+      end
+    end
+
+    context 'when the user enters a column that is full, then a valid column' do
+      before do
+        valid_input = 6
+        allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
+      end
+
+      it 'completes loop 6 times, then an error when the column is full' do
+        error_message = "Input error! The selected column is full!"
+        expect(game_input).to receive(:puts).with(error_message).once
+        7.times do
+          game_input.player_turn(1)
+        end
+      end
+    end
+  end
+
   describe '#player_input' do
     # Located inside #play_game (Public Script Method)
     # Looping Script Method -> Test the behavior of the method
@@ -55,38 +87,6 @@ describe ConnectFour do
         error_message = "Input error! Please enter a number between #{min} or #{max}."
         expect(game_input).to receive(:puts).with(error_message).once
         game_input.player_input(min, max)
-      end
-    end
-  end
-
-  describe '#player_turn' do
-    # Loops until valid input is entered
-    subject(:game_input) { described_class.new() }
-
-    context 'when user input is valid' do
-      before do
-        valid_input = 6
-        allow(game_input).to receive(:player_input).and_return(valid_input)
-      end
-
-      it 'enters a token in the selected column' do
-        board = game_input.instance_variable_get(:@board)
-        expect { game_input.player_turn(1) }.to change { board[5].length }.by(1)
-      end
-    end
-
-    context 'when the user enters a column that is full, then a valid column' do
-      before do
-        valid_input = 6
-        allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
-      end
-
-      it 'completes loop 6 times, then an error when the column is full' do
-        error_message = "Input error! The selected column is full!"
-        expect(game_input).to receive(:puts).with(error_message).once
-        7.times do
-          game_input.player_turn(1)
-        end
       end
     end
   end
