@@ -20,16 +20,6 @@ class ConnectFour
     # do stuff
   end
 
-  def player_input(min, max)
-    loop do
-      user_input = gets.chomp
-      verified_number = verify_input(min, max, user_input.to_i) if user_input.match?(/^\d+$/)
-      return verified_number if verified_number
-
-      puts "Input error! Please enter a number between #{min} or #{max}."
-    end
-  end
-
   def player_turn(current_player)
     input = player_input(@minimum, @maximum) - 1
     unless @board[input].length >= @height
@@ -37,6 +27,16 @@ class ConnectFour
       current_player = current_player == 1 ? 2 : 1
     else
       puts "Input error! The selected column is full!"
+    end
+  end
+
+  def player_input(min, max)
+    loop do
+      user_input = gets.chomp
+      verified_number = verify_input(min, max, user_input.to_i) if user_input.match?(/^\d+$/)
+      return verified_number if verified_number
+
+      puts "Input error! Please enter a number between #{min} or #{max}."
     end
   end
 
