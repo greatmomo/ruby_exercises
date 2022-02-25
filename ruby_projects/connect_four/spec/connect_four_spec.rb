@@ -32,7 +32,7 @@ describe ConnectFour do
 
       it 'enters a token in the selected column' do
         board = game_input.instance_variable_get(:@board)
-        expect { game_input.player_turn(1) }.to change { board[5].length }.by(1)
+        expect { game_input.player_turn }.to change { board[5].length }.by(1)
       end
     end
 
@@ -46,7 +46,7 @@ describe ConnectFour do
         error_message = "Input error! The selected column is full!"
         expect(game_input).to receive(:puts).with(error_message).once
         7.times do
-          game_input.player_turn(1)
+          game_input.player_turn
         end
       end
     end
@@ -57,11 +57,17 @@ describe ConnectFour do
     subject(:game_input) { described_class.new() }
 
     it 'toggles from 1 to 2' do
-      expect()
+      expect { game_input.toggle_player }.to change { game_input.current_player }.from(1).to(2)
     end
 
-    it 'toggles from 2 to 1' do
-      expect()
+    context 'toggle twice to go from 2 to 1' do
+      before do
+        game_input.toggle_player
+      end
+      
+      it 'toggles from 2 to 1' do
+        expect { game_input.toggle_player }.to change { game_input.current_player }.from(2).to(1)
+      end
     end
   end
 
@@ -136,27 +142,77 @@ describe ConnectFour do
     context 'when all columns are full' do
       before do
         # first, fill the board
-        (0..6).each do |valid_input|
-          allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
-        end
-        allow(game_input).to receive(:player_input).and_return(3)
+        game_input.instance_variable_set(:@board, [['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭']])
       end
 
       it 'returns true' do
-        expect(game_input.board_full?).to eql(true)
+        expect(game_input.board_full?).to be true
       end
     end
 
     context 'when one column is not full' do
       before do
         # first, fill the board except for last column
-        (0...6).each do |valid_input|
-          allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
-        end
+        game_input.instance_variable_set(:@board, [['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],[]])
       end
 
       it 'returns false' do
-        expect(game_input.board_full?).to eql(false)
+        expect(game_input.board_full?).to be false
+      end
+    end
+  end
+
+  describe '#game_over?' do
+    # when a move is made, check adjacent and diagonal tiles to see if there are four in a row
+    subject(:game_input) { described_class.new() }
+
+    context 'game is not over' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭','☭'],[],[],[],[],[]])
+      end
+
+      it 'returns false' do
+        expect(game_input.game_over?).to be false
+      end
+    end
+
+    context 'column victory' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭','☭','☭','☭'],[],[],[],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+
+    context 'row victory' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭'],['☭'],['☭'],['☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+
+    context 'diagonal victory 1' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭'],['@','☭'],['@','@','☭'],['@','@','@','☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+
+    context 'diagonal victory 2' do
+      before do
+        game_input.instance_variable_set(:@board, [['@','@','@','☭'],['@','@','☭'],['@','☭'],['☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
       end
     end
   end
