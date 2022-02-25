@@ -9,10 +9,15 @@ class ConnectFour
     @height = height
     @board = [[],[],[],[],[],[],[]]
     @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
+    @current_player = 1
   end
 
   def players
     @players
+  end
+
+  def current_player
+    @current_player
   end
 
   def play_game
@@ -20,14 +25,18 @@ class ConnectFour
     # do stuff
   end
 
-  def player_turn(current_player)
+  def player_turn
     input = player_input(@minimum, @maximum) - 1
     unless @board[input].length >= @height
       @board[input] << players[current_player - 1].symbol
-      current_player = current_player == 1 ? 2 : 1
+      @current_player = toggle_player
     else
       puts "Input error! The selected column is full!"
     end
+  end
+
+  def toggle_player
+    @current_player = @current_player == 1 ? 2 : 1
   end
 
   def player_input(min, max)
@@ -45,5 +54,9 @@ class ConnectFour
   end
 
   def board_full?
+    @board.each do |column|
+      return false unless column.length >= 6
+    end
+    true
   end
 end
