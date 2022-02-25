@@ -142,26 +142,22 @@ describe ConnectFour do
     context 'when all columns are full' do
       before do
         # first, fill the board
-        (0..6).each do |valid_input|
-          game_input.board[valid_input] << '@'
-        end
+        game_input.instance_variable_set(:@board, [['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭']])
       end
 
       it 'returns true' do
-        expect(game_input.board_full?).to eql(true)
+        expect(game_input.board_full?).to be true
       end
     end
 
     context 'when one column is not full' do
       before do
         # first, fill the board except for last column
-        (0...6).each do |valid_input|
-          allow(game_input).to receive(:player_input).and_return(valid_input, valid_input, valid_input, valid_input, valid_input, valid_input)
-        end
+        game_input.instance_variable_set(:@board, [['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],['☭','☭','☭','☭','☭','☭'],[]])
       end
 
       it 'returns false' do
-        expect(game_input.board_full?).to eql(false)
+        expect(game_input.board_full?).to be false
       end
     end
   end
