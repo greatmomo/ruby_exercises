@@ -22,7 +22,7 @@ class ConnectFour
 
   def play_game
     # introduction
-    # do stuff
+    player_turn until board_full? || game_over?
   end
 
   def player_turn

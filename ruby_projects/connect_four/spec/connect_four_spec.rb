@@ -161,4 +161,59 @@ describe ConnectFour do
       end
     end
   end
+
+  describe '#game_over?' do
+    # when a move is made, check adjacent and diagonal tiles to see if there are four in a row
+    subject(:game_input) { described_class.new() }
+
+    context 'game is not over' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭','☭'],[],[],[],[],[]])
+      end
+
+      it 'returns false' do
+        expect(game_input.game_over?).to be false
+      end
+    end
+
+    context 'column victory' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭','☭','☭','☭'],[],[],[],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+
+    context 'row victory' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭'],['☭'],['☭'],['☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+
+    context 'diagonal victory 1' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭'],['@','☭'],['@','@','☭'],['@','@','@','☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+
+    context 'diagonal victory 2' do
+      before do
+        game_input.instance_variable_set(:@board, [['@','@','@','☭'],['@','@','☭'],['@','☭'],['☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.game_over?).to be true
+      end
+    end
+  end
 end
