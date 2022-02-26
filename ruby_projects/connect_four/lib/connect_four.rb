@@ -59,4 +59,34 @@ class ConnectFour
     end
     true
   end
+
+  def game_over?(col, row)
+    return true if scan_vertical(col, row) >= 4 || scan_horizontal(col, row) >= 4
+    false
+  end
+
+  def scan_vertical(col, row)
+    row -= 1 while row >= 0 && @board[col][row] == players[current_player - 1].symbol
+    row += 1
+    count = 0
+    while row <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+      count += 1
+      row += 1
+    end
+    count
+  end
+
+  def scan_horizontal(col, row)
+    col -= 1 while col >= 0 && @board[col][row] == players[current_player - 1].symbol
+    col += 1
+    count = 0
+    while col <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+      count += 1
+      col += 1
+    end
+    count
+  end
+
+  def scan_diagonal(col, row)
+  end
 end

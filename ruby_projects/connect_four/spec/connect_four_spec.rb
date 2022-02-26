@@ -172,7 +172,7 @@ describe ConnectFour do
       end
 
       it 'returns false' do
-        expect(game_input.game_over?).to be false
+        expect(game_input.game_over?(0,1)).to be false
       end
     end
 
@@ -182,7 +182,7 @@ describe ConnectFour do
       end
 
       it 'returns true' do
-        expect(game_input.game_over?).to be true
+        expect(game_input.game_over?(0,3)).to be true
       end
     end
 
@@ -192,7 +192,7 @@ describe ConnectFour do
       end
 
       it 'returns true' do
-        expect(game_input.game_over?).to be true
+        expect(game_input.game_over?(2,0)).to be true
       end
     end
 
@@ -202,7 +202,7 @@ describe ConnectFour do
       end
 
       it 'returns true' do
-        expect(game_input.game_over?).to be true
+        expect(game_input.game_over?(2,2)).to be true
       end
     end
 
@@ -212,7 +212,59 @@ describe ConnectFour do
       end
 
       it 'returns true' do
-        expect(game_input.game_over?).to be true
+        expect(game_input.game_over?(1,2)).to be true
+      end
+    end
+  end
+
+  describe '#scan_vertical' do
+    subject(:game_input) { described_class.new() }
+
+    context 'connected 4 vertically' do
+      before do
+        game_input.instance_variable_set(:@board, [['@','☭','☭','☭','☭','@'],[],[],[],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.scan_vertical(0,3)).to eq(4)
+      end
+    end
+  end
+
+  describe '#scan_horizontal' do
+    subject(:game_input) { described_class.new() }
+
+    context 'connected 4 vertically' do
+      before do
+        game_input.instance_variable_set(:@board, [['@'],['☭'],['☭'],['☭'],['☭'],['@']])
+      end
+
+      it 'returns true' do
+        expect(game_input.scan_horizontal(3,0)).to eq(4)
+      end
+    end
+  end
+
+  describe '#scan_diagonal' do
+    subject(:game_input) { described_class.new() }
+
+    context 'connected 4 up_right' do
+      before do
+        game_input.instance_variable_set(:@board, [['☭'],['@','☭'],['@','@','☭'],['@','@','@','☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.scan_diagonal(0,0)).to eq(4)
+      end
+    end
+
+    context 'connected 4 up_left' do
+      before do
+        game_input.instance_variable_set(:@board, [['@','@','@','☭'],['@','@','☭'],['@','☭'],['☭'],[],[]])
+      end
+
+      it 'returns true' do
+        expect(game_input.scan_diagonal(3,3)).to eq(4)
       end
     end
   end
