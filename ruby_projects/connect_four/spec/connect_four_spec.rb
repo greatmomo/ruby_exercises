@@ -254,7 +254,7 @@ describe ConnectFour do
       end
 
       it 'returns true' do
-        expect(game_input.scan_diagonal(0,0)).to eq(4)
+        expect(game_input.scan_up_right(0,0)).to eq(4)
       end
     end
 
@@ -264,7 +264,7 @@ describe ConnectFour do
       end
 
       it 'returns true' do
-        expect(game_input.scan_diagonal(3,3)).to eq(4)
+        expect(game_input.scan_up_left(1,2)).to eq(4)
       end
     end
   end
