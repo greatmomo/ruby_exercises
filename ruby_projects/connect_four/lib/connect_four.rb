@@ -59,4 +59,67 @@ class ConnectFour
     end
     true
   end
+
+  def game_over?(col, row)
+    return true if scan_vertical(col, row) >= 4 || scan_horizontal(col, row) >= 4 || scan_up_right(col, row) >= 4 || scan_up_left(col, row) >= 4
+    false
+  end
+
+  def scan_vertical(col, row)
+    row -= 1 while row >= 0 && @board[col][row] == players[current_player - 1].symbol
+    row += 1
+    count = 0
+    while row <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+      count += 1
+      row += 1
+    end
+    count
+  end
+
+  def scan_horizontal(col, row)
+    col -= 1 while col >= 0 && @board[col][row] == players[current_player - 1].symbol
+    col += 1
+    count = 0
+    while col <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+      count += 1
+      col += 1
+    end
+    count
+  end
+
+  def scan_up_right(col, row)
+    up_right_col= col
+    up_right_row= row
+    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == players[current_player - 1].symbol do
+      up_right_col += 1 
+      up_right_row += 1
+    end
+    up_right_col -= 1
+    up_right_row -= 1
+    count = 0
+    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == players[current_player - 1].symbol do
+      count += 1
+      up_right_col -= 1
+      up_right_row -= 1
+    end
+    count
+  end
+
+  def scan_up_left(col, row)
+    up_left_col = col
+    up_left_row = row
+    while up_left_col.between?(0,@maximum) && up_left_row.between?(0,@maximum) && @board[up_left_col][up_left_row] == players[current_player - 1].symbol do
+      up_left_col -= 1 
+      up_left_row += 1
+    end
+    up_left_col += 1
+    up_left_row -= 1
+    count = 0
+    while up_left_col.between?(0,@maximum) && up_left_row.between?(0,@maximum) && @board[up_left_col][up_left_row] == players[current_player - 1].symbol do
+      count += 1
+      up_left_col += 1
+      up_left_row -= 1
+    end
+    count
+  end
 end
