@@ -10,7 +10,7 @@ class ConnectFour
     @board = [[],[],[],[],[],[],[]]
     @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
     @current_player = 1
-    @last_played = []
+    @last_played = [0,0]
   end
 
   def players
@@ -22,18 +22,15 @@ class ConnectFour
   end
 
   def play_game
-    # introduction
+    introduction
     player_turn until board_full? || game_over?(@last_played[0], @last_played[1])
     end_game
-  end
-
-  def introduction
   end
 
   def end_game
     if board_full?
       puts "Game Over! The board is full!"
-    else
+    elsif game_over?(@last_played[0], @last_played[1])
       if @board[@last_played[0]][@last_played[1]] == players[0].symbol
         puts "Game Over! Player 1 Wins!"
       else
@@ -43,6 +40,8 @@ class ConnectFour
   end
 
   def player_turn
+    print_board
+    print_prompt
     input = player_input(@minimum, @maximum) - 1
     unless @board[input].length >= @height
       @board[input] << players[current_player - 1].symbol
@@ -143,4 +142,23 @@ class ConnectFour
     end
     count
   end
+
+  def introduction
+    puts <<~HEREDOC
+
+    \e[0mWelcome to \e[32mConnect Four!\e[0m
+
+      Take turns placing your symbol until somebody has \e[32mfour in a row\e[0m.
+    HEREDOC
+  end
+
+  def print_board
+    # system "clear" || system "cls"
+  end
+
+  def print_prompt
+  end
 end
+
+game = ConnectFour.new
+game.play_game
