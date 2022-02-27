@@ -10,6 +10,7 @@ class ConnectFour
     @board = [[],[],[],[],[],[],[]]
     @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
     @current_player = 1
+    @last_played = []
   end
 
   def players
@@ -22,13 +23,30 @@ class ConnectFour
 
   def play_game
     # introduction
-    player_turn until board_full? || game_over?
+    player_turn until board_full? || game_over?(@last_played[0], @last_played[1])
+    end_game
+  end
+
+  def introduction
+  end
+
+  def end_game
+    if board_full?
+      puts "Game Over! The board is full!"
+    else
+      if @board[@last_played[0]][@last_played[1]] == players[0].symbol
+        puts "Game Over! Player 1 Wins!"
+      else
+        puts "Game Over! Player 2 Wins!"
+      end
+    end
   end
 
   def player_turn
     input = player_input(@minimum, @maximum) - 1
     unless @board[input].length >= @height
       @board[input] << players[current_player - 1].symbol
+      @last_played = [input, @board[input].length - 1]
       @current_player = toggle_player
     else
       puts "Input error! The selected column is full!"
