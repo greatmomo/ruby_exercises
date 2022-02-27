@@ -66,10 +66,11 @@ class ConnectFour
   end
 
   def scan_vertical(col, row)
-    row -= 1 while row >= 0 && @board[col][row] == players[current_player - 1].symbol
+    symbol = @board[col][row]
+    row -= 1 while row >= 0 && @board[col][row] == symbol
     row += 1
     count = 0
-    while row <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+    while row <= @maximum && @board[col][row] == symbol do
       count += 1
       row += 1
     end
@@ -77,10 +78,11 @@ class ConnectFour
   end
 
   def scan_horizontal(col, row)
-    col -= 1 while col >= 0 && @board[col][row] == players[current_player - 1].symbol
+    symbol = @board[col][row]
+    col -= 1 while col >= 0 && @board[col][row] == symbol
     col += 1
     count = 0
-    while col <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+    while col <= @maximum && @board[col][row] == symbol do
       count += 1
       col += 1
     end
@@ -88,16 +90,17 @@ class ConnectFour
   end
 
   def scan_up_right(col, row)
+    symbol = @board[col][row]
     up_right_col= col
     up_right_row= row
-    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == players[current_player - 1].symbol do
+    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == symbol do
       up_right_col += 1 
       up_right_row += 1
     end
     up_right_col -= 1
     up_right_row -= 1
     count = 0
-    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == players[current_player - 1].symbol do
+    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == symbol do
       count += 1
       up_right_col -= 1
       up_right_row -= 1
