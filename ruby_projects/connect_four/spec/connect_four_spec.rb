@@ -47,8 +47,8 @@ describe ConnectFour do
 
     context 'when player 2 wins horizontally' do
       before do
-        # game_input.instance_variable_set(:@board, [['@','☭','☭','☭','☭'],[],[],[],[],[]])
-        # game_input.instance_variable_set(:@last_played, [0,4])
+        game_input.instance_variable_set(:@board, [['☭','☪','☭','☭'],['☭','☪'],['☪','☪'],['☪','☪'],['☭','☭'],[]])
+        game_input.instance_variable_set(:@last_played, [3,1])
       end
 
       it 'game_over? is true' do
