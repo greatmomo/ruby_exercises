@@ -10,6 +10,7 @@ class ConnectFour
     @board = [[],[],[],[],[],[],[]]
     @players = [Player.new(symbol_p1), Player.new(symbol_p2)]
     @current_player = 1
+    @last_played = [0,0]
   end
 
   def players
@@ -21,14 +22,30 @@ class ConnectFour
   end
 
   def play_game
-    # introduction
-    player_turn until board_full? || game_over?
+    introduction
+    player_turn until board_full? || game_over?(@last_played[0], @last_played[1])
+    end_game
+  end
+
+  def end_game
+    if board_full?
+      puts "Game Over! The board is full!"
+    elsif game_over?(@last_played[0], @last_played[1])
+      if @board[@last_played[0]][@last_played[1]] == players[0].symbol
+        puts "Game Over! Player 1 Wins!"
+      else
+        puts "Game Over! Player 2 Wins!"
+      end
+    end
   end
 
   def player_turn
+    print_board
+    print_prompt
     input = player_input(@minimum, @maximum) - 1
     unless @board[input].length >= @height
       @board[input] << players[current_player - 1].symbol
+      @last_played = [input, @board[input].length - 1]
       @current_player = toggle_player
     else
       puts "Input error! The selected column is full!"
@@ -66,10 +83,11 @@ class ConnectFour
   end
 
   def scan_vertical(col, row)
-    row -= 1 while row >= 0 && @board[col][row] == players[current_player - 1].symbol
+    symbol = @board[col][row]
+    row -= 1 while row >= 0 && @board[col][row] == symbol
     row += 1
     count = 0
-    while row <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+    while row <= @maximum && @board[col][row] == symbol do
       count += 1
       row += 1
     end
@@ -77,10 +95,11 @@ class ConnectFour
   end
 
   def scan_horizontal(col, row)
-    col -= 1 while col >= 0 && @board[col][row] == players[current_player - 1].symbol
+    symbol = @board[col][row]
+    col -= 1 while col >= 0 && @board[col][row] == symbol
     col += 1
     count = 0
-    while col <= @maximum && @board[col][row] == players[current_player - 1].symbol do
+    while col <= @maximum && @board[col][row] == symbol do
       count += 1
       col += 1
     end
@@ -88,16 +107,17 @@ class ConnectFour
   end
 
   def scan_up_right(col, row)
+    symbol = @board[col][row]
     up_right_col= col
     up_right_row= row
-    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == players[current_player - 1].symbol do
+    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == symbol do
       up_right_col += 1 
       up_right_row += 1
     end
     up_right_col -= 1
     up_right_row -= 1
     count = 0
-    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == players[current_player - 1].symbol do
+    while up_right_col.between?(0,@maximum) && up_right_row.between?(0,@maximum) && @board[up_right_col][up_right_row] == symbol do
       count += 1
       up_right_col -= 1
       up_right_row -= 1
@@ -122,4 +142,23 @@ class ConnectFour
     end
     count
   end
+
+  def introduction
+    puts <<~HEREDOC
+
+    \e[0mWelcome to \e[32mConnect Four!\e[0m
+
+      Take turns placing your symbol until somebody has \e[32mfour in a row\e[0m.
+    HEREDOC
+  end
+
+  def print_board
+    # system "clear" || system "cls"
+  end
+
+  def print_prompt
+  end
 end
+
+game = ConnectFour.new
+game.play_game
