@@ -165,9 +165,13 @@ class ConnectFour
   end
 
   def print_prompt
+    puts <<~HEREDOC
+      1   2   3   4   5   6   7
+
+    \e[32mPlayer #{@current_player}\e[0m, type the number of the row you would like to play in then press \e[32mENTER\e[0m.
+    HEREDOC
   end
 end
 
 game = ConnectFour.new
-game.print_board
 game.play_game
