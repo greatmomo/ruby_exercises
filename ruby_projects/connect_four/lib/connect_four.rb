@@ -154,6 +154,14 @@ class ConnectFour
 
   def print_board
     # system "clear" || system "cls"
+    puts
+    (0..@height).each do |row|
+      (@minimum..@maximum).each do |column|
+        print "| #{@board[row][column].nil? ? "O" : @board[row][column]} "
+      end
+      puts "|\n"
+    end
+    puts "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"
   end
 
   def print_prompt
@@ -161,4 +169,5 @@ class ConnectFour
 end
 
 game = ConnectFour.new
+game.print_board
 game.play_game
