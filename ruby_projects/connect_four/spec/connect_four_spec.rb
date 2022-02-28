@@ -142,7 +142,7 @@ describe ConnectFour do
       it 'completes loop and displays error message once' do
         min = game_input.instance_variable_get(:@minimum)
         max = game_input.instance_variable_get(:@maximum)
-        error_message = "Input error! Please enter a number between #{min} or #{max}."
+        error_message = "Input error! Please enter a number between #{min + 1} and #{max + 1}."
         expect(game_input).to receive(:puts).with(error_message).once
         game_input.player_input(min, max)
       end

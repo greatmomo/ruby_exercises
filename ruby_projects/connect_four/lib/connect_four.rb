@@ -23,11 +23,15 @@ class ConnectFour
 
   def play_game
     introduction
-    player_turn until board_full? || game_over?(@last_played[0], @last_played[1])
+    loop do
+      player_turn
+      break if board_full? || game_over?(@last_played[0], @last_played[1])
+    end
     end_game
   end
 
   def end_game
+    print_board
     if board_full?
       puts "Game Over! The board is full!"
     elsif game_over?(@last_played[0], @last_played[1])
@@ -59,10 +63,10 @@ class ConnectFour
   def player_input(min, max)
     loop do
       user_input = gets.chomp
-      verified_number = verify_input(min, max, user_input.to_i) if user_input.match?(/^\d+$/)
+      verified_number = verify_input(min + 1, max + 1, user_input.to_i) if user_input.match?(/^\d+$/)
       return verified_number if verified_number
 
-      puts "Input error! Please enter a number between #{min} or #{max}."
+      puts "Input error! Please enter a number between #{min + 1} and #{max + 1}."
     end
   end
 
@@ -154,11 +158,24 @@ class ConnectFour
 
   def print_board
     # system "clear" || system "cls"
+    puts
+    (0..@height).each do |row|
+      (@minimum..@maximum).each do |column|
+        print "| #{@board[column][@height - row].nil? ? "O" : @board[column][@height - row]} "
+      end
+      puts "|\n"
+    end
+    puts "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"
   end
 
   def print_prompt
+    puts <<~HEREDOC
+      1   2   3   4   5   6   7
+
+    \e[32mPlayer #{@current_player}\e[0m, type the number of the row you would like to play in then press \e[32mENTER\e[0m.
+    HEREDOC
   end
 end
 
-game = ConnectFour.new
-game.play_game
+# game = ConnectFour.new
+# game.play_game
