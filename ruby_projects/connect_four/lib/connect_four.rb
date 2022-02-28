@@ -23,11 +23,15 @@ class ConnectFour
 
   def play_game
     introduction
-    player_turn until board_full? || game_over?(@last_played[0], @last_played[1])
+    loop do
+      player_turn
+      break if board_full? || game_over?(@last_played[0], @last_played[1])
+    end
     end_game
   end
 
   def end_game
+    print_board
     if board_full?
       puts "Game Over! The board is full!"
     elsif game_over?(@last_played[0], @last_played[1])
