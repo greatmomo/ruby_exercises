@@ -17,46 +17,7 @@ describe ConnectFour do
   end
 
   describe '#play_game' do
-    subject(:game_input) { described_class.new() }
-
-    context 'when the board is filled' do
-      before do
-        game_input.instance_variable_set(:@board, [['☭','@','☭','@','☭','@'],['@','☭','@','☭','@','☭'],['$','$','#','#','$','$'],['☭','@','☭','@','☭','@'],['@','☭','@','☭','@','☭'],['$','$','#','#','$','$']])
-        game_input.instance_variable_set(:@last_played, [3,3])
-      end
-
-      it 'board_full? is true' do
-        board_full_message = "Game Over! The board is full!"
-        expect(game_input).to receive(:puts).with(board_full_message).once
-        game_input.play_game
-      end
-    end
-
-    context 'when player 1 wins vertically' do
-      before do
-        game_input.instance_variable_set(:@board, [['@','☭','☭','☭','☭'],[],[],[],[],[]])
-        game_input.instance_variable_set(:@last_played, [0,4])
-      end
-
-      it 'game_over? is true' do
-        game_over_message = "Game Over! Player 1 Wins!"
-        expect(game_input).to receive(:puts).with(game_over_message).once
-        game_input.play_game
-      end
-    end
-
-    context 'when player 2 wins horizontally' do
-      before do
-        game_input.instance_variable_set(:@board, [['☭','☪','☭','☭'],['☭','☪'],['☪','☪'],['☪','☪'],['☭','☭'],[]])
-        game_input.instance_variable_set(:@last_played, [3,1])
-      end
-
-      it 'game_over? is true' do
-        game_over_message = "Game Over! Player 2 Wins!"
-        expect(game_input).to receive(:puts).with(game_over_message).once
-        game_input.play_game
-      end
-    end
+    # script method, should be checked in components
   end
 
   describe '#player_turn' do
