@@ -130,16 +130,17 @@ class ConnectFour
   end
 
   def scan_up_left(col, row)
+    symbol = @board[col][row]
     up_left_col = col
     up_left_row = row
-    while up_left_col.between?(0,@maximum) && up_left_row.between?(0,@maximum) && @board[up_left_col][up_left_row] == players[current_player - 1].symbol do
+    while up_left_col.between?(0,@maximum) && up_left_row.between?(0,@maximum) && @board[up_left_col][up_left_row] == symbol do
       up_left_col -= 1 
       up_left_row += 1
     end
     up_left_col += 1
     up_left_row -= 1
     count = 0
-    while up_left_col.between?(0,@maximum) && up_left_row.between?(0,@maximum) && @board[up_left_col][up_left_row] == players[current_player - 1].symbol do
+    while up_left_col.between?(0,@maximum) && up_left_row.between?(0,@maximum) && @board[up_left_col][up_left_row] == symbol do
       count += 1
       up_left_col += 1
       up_left_row -= 1
@@ -177,5 +178,5 @@ class ConnectFour
   end
 end
 
-# game = ConnectFour.new
-# game.play_game
+game = ConnectFour.new
+game.play_game
