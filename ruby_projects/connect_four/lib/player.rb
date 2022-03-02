@@ -5,7 +5,5 @@ class Player
     @symbol = symbol
   end
 
-  def symbol
-    @symbol
-  end
+  attr_reader :symbol
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/player.rb'
+require_relative '../lib/player'
 
 describe Player do
   describe '#initialize' do
